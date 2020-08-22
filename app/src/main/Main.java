@@ -26,7 +26,7 @@ public class Main extends Application {
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
 
-        controller = new Controller(root);
+        controller = new Controller(scene, root);
 
         setScene(root);
 
@@ -34,7 +34,7 @@ public class Main extends Application {
     }
 
     private void setScene(Group root) {
-        controller.setScene(root);
+        controller.setScene();
     }
 
 }
