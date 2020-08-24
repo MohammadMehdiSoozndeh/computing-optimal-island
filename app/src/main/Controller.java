@@ -9,17 +9,14 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 
 import java.util.ArrayList;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class Controller {
 
     // constants
-    private final int VERTEX_RADIUS = 6;
-    private final Double SQUARE_BOARD_SIZE = 800.0;
-    private final Double SQUARE_BOARD_X = 380.0;
-    private final Double SQUARE_BOARD_Y = 25.0;
+    public static final Double SQUARE_BOARD_SIZE = 800.0;
+    public static final Double SQUARE_BOARD_X = 380.0;
+    public static final Double SQUARE_BOARD_Y = 25.0;
     private final Double BUTTONS_Y_SAFE_DISTANCE = 50.0;
-    private final int RANDOM_VERTICES_NUMBER = 50;
     private final Group root;
     private final Scene scene;
     // buttons
@@ -37,7 +34,6 @@ public class Controller {
     public Controller(Scene scene, Group root) {
         this.scene = scene;
         this.root = root;
-
         graph = new Graph(new ArrayList<>());
     }
 
@@ -88,89 +84,27 @@ public class Controller {
 
     private void setBoardClickable() {
         scene.setOnMouseClicked(mouseEvent -> {
-            if (!isVerticesConfirmed) {
-                if (isClickedOnBoard(mouseEvent)) {
-                    if (isVertexCoordinationInvalid(mouseEvent.getX(), mouseEvent.getY())) {
-                        errorCreatingVertex();
-                    } else {
-                        addVertexOnClick(mouseEvent);
-                    }
-                }
-            }
-
+            if (!isVerticesConfirmed && isBoardClicked(mouseEvent) &&
+                    !graph.isVertexCoordinationInvalid(mouseEvent.getX(), mouseEvent.getY()))
+                root.getChildren().add(graph.addVertexOnClick(mouseEvent).getCircle());
         });
     }
 
-    private void errorCreatingVertex() {
-    }
-
-    private boolean isVertexCoordinationInvalid(double x, double y) {
-        for (Vertex v : graph.getVertexList()) {
-            if (v.getCircle().contains(x, y)) {
-                errorCreatingVertex();
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private boolean isClickedOnBoard(MouseEvent mouseEvent) {
-        return rectangle.contains(mouseEvent.getX() + 15, mouseEvent.getY() + 15)
-                && rectangle.contains(mouseEvent.getX() - 15, mouseEvent.getY() - 15);
-    }
-
-    private void addVertexOnClick(MouseEvent mouseEvent) {
-        circle = new Circle(mouseEvent.getX(), mouseEvent.getY(), VERTEX_RADIUS);
-        circle.setFill(VertexColorGenerator.getColor());
-        Vertex vertex;
-        vertex = new Vertex(this.circle);
-        graph.addVertex(vertex);
-        root.getChildren().add(this.circle);
-    }
-
-    private void addVertexOnRandomGenerator() {
-        for (int i = 0; i < RANDOM_VERTICES_NUMBER; i++) {
-            double randomX = ThreadLocalRandom.current().nextDouble
-                    (SQUARE_BOARD_X + 15, SQUARE_BOARD_X + SQUARE_BOARD_SIZE - 15);
-            double randomY = ThreadLocalRandom.current().nextDouble
-                    (SQUARE_BOARD_Y + 15, SQUARE_BOARD_Y + SQUARE_BOARD_SIZE - 15);
-
-            if (isVertexCoordinationInvalid(randomX, randomY)) {
-                i--;
-            } else {
-                circle = new Circle(randomX, randomY, VERTEX_RADIUS);
-                circle.setFill(VertexColorGenerator.getColor());
-                root.getChildren().add(this.circle);
-            }
-        }
+    private boolean isBoardClicked(MouseEvent mouseEvent) {
+        return rectangle.contains(mouseEvent.getX() + 10, mouseEvent.getY() + 10)
+                && rectangle.contains(mouseEvent.getX() - 10, mouseEvent.getY() - 10);
     }
 
     private void setGenerateRandomVerticesButton() {
         randomVerticesGeneratorBtn.setOnMouseClicked(event -> {
-            addVertexOnRandomGenerator();
+            graph.randomVertexGenerator();
+            for (Vertex v : graph.getVertexList())
+                root.getChildren().add(v.getCircle());
         });
     }
 
     private void setClearButton() {
 
-    }
-
-    public static class VertexColorGenerator {
-        private static int index = 0;
-
-        public VertexColorGenerator() {
-            index = 0;
-        }
-
-        public static Color getColor() {
-            if (index == 0) {
-                index = 1;
-                return Color.BLUE;
-            } else {
-                index = 0;
-                return Color.RED;
-            }
-        }
     }
 
 }
