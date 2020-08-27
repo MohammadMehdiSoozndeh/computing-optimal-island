@@ -13,9 +13,9 @@ public class Graph {
 
     private List<Vertex> vertexList;
 
-    public static final int RANDOM_VERTICES_NUMBER_ORIGIN = 30;
-    public static final int RANDOM_VERTICES_NUMBER_BOUND = 80;
-    public static final int VERTEX_RADIUS = 6;
+    public static final int RANDOM_VERTICES_NUMBER_ORIGIN = 50;
+    public static final int RANDOM_VERTICES_NUMBER_BOUND = 150;
+    public static final int VERTEX_RADIUS = 4;
 
     public Graph(List<Vertex> vertexList) {
         this.vertexList = vertexList;

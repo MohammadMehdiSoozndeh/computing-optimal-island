@@ -20,7 +20,7 @@ public class Main extends Application {
         Group root = new Group();
 
         Scene scene = new Scene(root, 1200, 850);
-        scene.setFill(Color.rgb(250, 250, 250, 0.5));
+        scene.setFill(Color.rgb(225, 225, 225));
 
         primaryStage.setTitle("Computing Optimal Islands");
         primaryStage.setScene(scene);
