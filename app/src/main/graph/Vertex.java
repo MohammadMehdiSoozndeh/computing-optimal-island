@@ -1,4 +1,4 @@
-package main;
+package main.graph;
 
 import javafx.scene.shape.Circle;
 
@@ -19,6 +19,7 @@ public class Vertex {
     }
 
     public boolean isTooClose(double x, double y) {
+
         double dY = Math.abs(this.circle.getCenterY() - y);
         double dX = Math.abs(this.circle.getCenterX() - x);
         double dD = Math.pow(dY, 2) + Math.pow(dX, 2);

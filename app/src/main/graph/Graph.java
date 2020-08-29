@@ -1,4 +1,4 @@
-package main;
+package main.graph;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonBar;
@@ -24,7 +24,7 @@ public class Graph {
         this.vertexList = vertexList;
     }
 
-    public List<Vertex> randomVertexGenerator() {
+    public void randomVertexGenerator() {
         int vertexRandomNum = ThreadLocalRandom.current().nextInt(RANDOM_VERTICES_NUMBER_ORIGIN, RANDOM_VERTICES_NUMBER_BOUND);
         for (int i = 0; i < vertexRandomNum; i++) {
             double randomX = ThreadLocalRandom.current().nextDouble
@@ -44,8 +44,6 @@ public class Graph {
                 vertexList.add(new Vertex(circle));
             }
         }
-        return vertexList;
-
     }
 
     public Vertex addVertexOnClick(MouseEvent mouseEvent) {
