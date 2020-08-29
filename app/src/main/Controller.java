@@ -2,17 +2,13 @@ package main;
 
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonBar;
-import javafx.scene.control.ButtonType;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 
 import java.util.ArrayList;
-import java.util.Optional;
 
 public class Controller {
 
@@ -47,7 +43,7 @@ public class Controller {
         setupMenu();
         setBoardClickable();
         setGenerateRandomVerticesButton();
-        setUserInputManuallyOptionsButton();
+        setColorOptionsButton();
         setClearButton();
     }
 
@@ -111,30 +107,8 @@ public class Controller {
         });
     }
 
-    private void setUserInputManuallyOptionsButton() {
-        colorOptions.setOnMouseClicked(mouseEvent -> {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("Color Option");
-            alert.setHeaderText("Color Variant");
-            alert.setContentText("How Many Type of color do you want?");
-
-            ButtonType buttonTypeTwo = new ButtonType("Two");
-            ButtonType buttonTypeThree = new ButtonType("Three");
-            ButtonType buttonTypeFour = new ButtonType("Four");
-            ButtonType buttonTypeFive = new ButtonType("Five");
-            ButtonType buttonTypeCancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
-
-            alert.getButtonTypes().setAll(buttonTypeTwo, buttonTypeThree, buttonTypeFour, buttonTypeFive, buttonTypeCancel);
-
-            Optional<ButtonType> result = alert.showAndWait();
-            if (result.get() == buttonTypeTwo) {
-                // ... user chose "Two"
-            } else if (result.get() == buttonTypeThree) {
-                // ... user chose "Three"
-            } else {
-                // ... user chose CANCEL or closed the dialog
-            }
-        });
+    private void setColorOptionsButton() {
+        colorOptions.setOnMouseClicked(mouseEvent -> Graph.VertexColorGenerator.colorOptionDialog());
     }
 
     private void setClearButton() {
