@@ -49,4 +49,11 @@ public class Vertex {
         this.label = label;
     }
 
+
+
+    @Override
+    public String toString() {
+        return "\n\t" + label + " : " + circle.getFill().toString() +
+                "\t X:" + (float) circle.getCenterX() + "\t Y:" + (float) circle.getCenterY();
+    }
 }

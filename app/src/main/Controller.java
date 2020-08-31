@@ -7,9 +7,14 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import main.graph.Graph;
 import main.graph.Vertex;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 public class Controller {
@@ -21,6 +26,7 @@ public class Controller {
     private final Double BUTTONS_Y_SAFE_DISTANCE = 50.0;
     private final Group root;
     private final Scene scene;
+    private final Stage primarySatge;
     // local variables
     private final boolean isVerticesConfirmed = false;
     private final Graph graph;
@@ -34,7 +40,8 @@ public class Controller {
     private Button infoBtn;
     private Circle circle;
 
-    public Controller(Scene scene, Group root) {
+    public Controller(Stage primaryStage, Scene scene, Group root) {
+        this.primarySatge = primaryStage;
         this.scene = scene;
         this.root = root;
         graph = new Graph(new ArrayList<>());
@@ -47,6 +54,7 @@ public class Controller {
         setGenerateRandomVerticesButton();
         setColorOptionsButton();
         setClearButton();
+        setSaveDataButton();
     }
 
     private void setupBoard() {
@@ -75,10 +83,6 @@ public class Controller {
         clearBtn = new Button("Clear");
         clearBtn.setLayoutY(runAlgorithmBtn.getLayoutY() + 10.5 * BUTTONS_Y_SAFE_DISTANCE);
         setupButtonView(clearBtn);
-
-        saveBtn = new Button("Save Data");
-        saveBtn.setLayoutY(clearBtn.getLayoutY() + BUTTONS_Y_SAFE_DISTANCE);
-        setupButtonView(saveBtn);
 
         saveBtn = new Button("Save Data");
         saveBtn.setLayoutY(clearBtn.getLayoutY() + BUTTONS_Y_SAFE_DISTANCE);
@@ -129,6 +133,35 @@ public class Controller {
     private boolean isBoardClicked(MouseEvent mouseEvent) {
         return rectangle.contains(mouseEvent.getX() + 10, mouseEvent.getY() + 10)
                 && rectangle.contains(mouseEvent.getX() - 10, mouseEvent.getY() - 10);
+    }
+
+    private void setSaveDataButton() {
+        saveBtn.setOnMouseClicked(event -> {
+            graph.sortY();
+            String result = "Vertices: " + graph.getVertexList().toString();
+
+            FileChooser fileChooser = new FileChooser();
+
+            FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
+            fileChooser.getExtensionFilters().add(extFilter);
+
+            File file = fileChooser.showSaveDialog(primarySatge);
+
+            if (file != null) {
+                saveTextToFile(result, file);
+            }
+        });
+    }
+
+    private void saveTextToFile(String content, File file) {
+        try {
+            PrintWriter writer;
+            writer = new PrintWriter(file);
+            writer.println(content);
+            writer.close();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
 
 }

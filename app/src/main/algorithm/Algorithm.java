@@ -16,6 +16,15 @@ public class Algorithm {
         this.graph = graph;
     }
 
+    public long BlueB(int i, List<Polygon> deltaList) {
+        if (i == 1)
+            return 2;
+        else
+            return BlueB(i - 1, deltaList.subList(0, deltaList.size() - 2))
+                    + BlueDelta(deltaList.get(deltaList.size() - 1), graph.getVertexList())
+                    - 2;
+    }
+
     public Polygon createTriangle(Circle pCircle, Circle qCircle, Circle rCircle) {
         Polygon delta = new Polygon();
         delta.getPoints().addAll(
@@ -25,7 +34,7 @@ public class Algorithm {
         return delta;
     }
 
-    public int BDelta(Polygon delta, List<Vertex> vertexList) {
+    public int BlueDelta(Polygon delta, List<Vertex> vertexList) {
         int temp = 0;
         for (Vertex vertex : vertexList)
             if (delta.contains(

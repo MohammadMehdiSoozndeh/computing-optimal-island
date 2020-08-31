@@ -7,6 +7,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
@@ -25,7 +26,8 @@ public class Graph {
     }
 
     public void randomVertexGenerator() {
-        int vertexRandomNum = ThreadLocalRandom.current().nextInt(RANDOM_VERTICES_NUMBER_ORIGIN, RANDOM_VERTICES_NUMBER_BOUND);
+        int vertexRandomNum =
+                ThreadLocalRandom.current().nextInt(RANDOM_VERTICES_NUMBER_ORIGIN, RANDOM_VERTICES_NUMBER_BOUND);
         for (int i = 0; i < vertexRandomNum; i++) {
             double randomX = ThreadLocalRandom.current().nextDouble
                     (SQUARE_BOARD_X + 15, SQUARE_BOARD_X + SQUARE_BOARD_SIZE - 15);
@@ -41,7 +43,7 @@ public class Graph {
                     circle.setFill(VertexColorGenerator.getNextColor(circle.getFill().toString()));
                     System.out.println("X:" + circle.getCenterX() + " Y:" + circle.getCenterY());
                 });
-                vertexList.add(new Vertex(circle));
+                vertexList.add(new Vertex(circle, i + ""));
             }
         }
     }
@@ -83,6 +85,10 @@ public class Graph {
 
     public void setVertexList(List<Vertex> vertexList) {
         this.vertexList = vertexList;
+    }
+
+    public void sortY() {
+        vertexList.sort(new SortByY());
     }
 
     public static class VertexColorGenerator {
@@ -149,4 +155,13 @@ public class Graph {
         }
 
     }
+
+    class SortByY implements Comparator<Vertex> {
+        @Override
+        public int compare(Vertex o1, Vertex o2) {
+            return (int) (o1.getCircle().getCenterY() - o2.getCircle().getCenterY());
+        }
+    }
+
+
 }
