@@ -96,10 +96,10 @@ public class Controller {
 
     private void setBoardClickable() {
         scene.setOnMouseClicked(mouseEvent -> {
-            randomVerticesGeneratorBtn.setDisable(true);
-            if (!isVerticesConfirmed && isBoardClicked(mouseEvent) &&
-                    !graph.isVertexCoordinationInvalid(mouseEvent.getX(), mouseEvent.getY()))
+            if (!isVerticesConfirmed && isBoardClicked(mouseEvent) && !graph.isVertexCoordinationInvalid(mouseEvent.getX(), mouseEvent.getY())) {
+                randomVerticesGeneratorBtn.setDisable(true);
                 root.getChildren().add(graph.addVertexOnClick(mouseEvent).getCircle());
+            }
         });
     }
 

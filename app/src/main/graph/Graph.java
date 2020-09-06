@@ -41,7 +41,7 @@ public class Graph {
                 circle.setFill(Graph.VertexColorGenerator.getColor());
                 circle.setOnMouseClicked(event -> {
                     circle.setFill(VertexColorGenerator.getNextColor(circle.getFill().toString()));
-                    System.out.println("X:" + circle.getCenterX() + " Y:" + circle.getCenterY());
+                    System.out.println("X:" + (float) circle.getCenterX() + " Y:" + (float) circle.getCenterY());
                 });
                 vertexList.add(new Vertex(circle, i + ""));
             }
