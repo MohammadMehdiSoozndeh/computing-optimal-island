@@ -5,7 +5,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -19,18 +18,18 @@ import java.util.ArrayList;
 
 public class Controller {
 
-    // constants
     public static final Double SQUARE_BOARD_SIZE = 800.0;
     public static final Double SQUARE_BOARD_X = 380.0;
     public static final Double SQUARE_BOARD_Y = 25.0;
     private final Double BUTTONS_Y_SAFE_DISTANCE = 50.0;
+
     private final Group root;
     private final Scene scene;
     private final Stage primarySatge;
-    // local variables
+
     private final boolean isVerticesConfirmed = false;
     private final Graph graph;
-    // buttons
+
     private Rectangle rectangle;
     private Button randomVerticesGeneratorBtn;
     private Button colorOptions;
@@ -38,7 +37,6 @@ public class Controller {
     private Button clearBtn;
     private Button saveBtn;
     private Button infoBtn;
-    private Circle circle;
 
     public Controller(Stage primaryStage, Scene scene, Group root) {
         this.primarySatge = primaryStage;
@@ -96,7 +94,8 @@ public class Controller {
 
     private void setBoardClickable() {
         scene.setOnMouseClicked(mouseEvent -> {
-            if (!isVerticesConfirmed && isBoardClicked(mouseEvent) && !graph.isVertexCoordinationInvalid(mouseEvent.getX(), mouseEvent.getY())) {
+            if (!isVerticesConfirmed && isBoardClicked(mouseEvent) &&
+                    !graph.isVertexCoordinationInvalid(mouseEvent.getX(), mouseEvent.getY())) {
                 randomVerticesGeneratorBtn.setDisable(true);
                 root.getChildren().add(graph.addVertexOnClick(mouseEvent).getCircle());
             }
@@ -120,7 +119,6 @@ public class Controller {
     private void setClearButton() {
 
     }
-
 
     private void setupButtonView(Button button) {
         button.setLayoutX(25);

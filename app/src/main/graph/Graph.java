@@ -143,25 +143,24 @@ public class Graph {
             alert.getButtonTypes().setAll(buttonTypeTwo, buttonTypeThree, buttonTypeFour, buttonTypeCancel);
 
             Optional<ButtonType> result = alert.showAndWait();
-            if (result.get() == buttonTypeTwo) {
+            if (result.isPresent() && result.get() == buttonTypeTwo) {
                 RANDOM_COLOR_BOUND = 2;
-            } else if (result.get() == buttonTypeThree) {
+            } else if (result.isPresent() && result.get() == buttonTypeThree) {
                 RANDOM_COLOR_BOUND = 3;
-            } else if (result.get() == buttonTypeFour) {
+            } else if (result.isPresent() && result.get() == buttonTypeFour) {
                 RANDOM_COLOR_BOUND = 4;
-            } else if (result.get() == buttonTypeCancel) {
-
+            } else if (result.isPresent() && result.get() == buttonTypeCancel) {
+                System.out.println("color choose canceled");
             }
         }
 
     }
 
-    class SortByY implements Comparator<Vertex> {
+    private static class SortByY implements Comparator<Vertex> {
         @Override
         public int compare(Vertex o1, Vertex o2) {
             return (int) (o1.getCircle().getCenterY() - o2.getCircle().getCenterY());
         }
     }
-
 
 }
