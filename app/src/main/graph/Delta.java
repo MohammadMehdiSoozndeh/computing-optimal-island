@@ -1,6 +1,7 @@
 package main.graph;
 
 import javafx.scene.shape.Polygon;
+import org.jetbrains.annotations.NotNull;
 
 public class Delta {
 
@@ -10,7 +11,7 @@ public class Delta {
 
     private Polygon delta;
 
-    public Delta(Vertex r, Vertex p, Vertex q) {
+    public Delta(@NotNull Vertex r, @NotNull Vertex p, @NotNull Vertex q) {
         this.r = r;
         this.p = p;
         this.q = q;

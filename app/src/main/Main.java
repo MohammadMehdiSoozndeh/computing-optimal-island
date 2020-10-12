@@ -5,6 +5,7 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import org.jetbrains.annotations.NotNull;
 
 public class Main extends Application {
 
@@ -15,7 +16,7 @@ public class Main extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) {
+    public void start(@NotNull Stage primaryStage) {
         Group root = new Group();
 
         Scene scene = new Scene(root, 1200, 850);

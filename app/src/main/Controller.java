@@ -10,6 +10,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import main.graph.Graph;
 import main.graph.Vertex;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
@@ -120,7 +121,7 @@ public class Controller {
 
     }
 
-    private void setupButtonView(Button button) {
+    private void setupButtonView(@NotNull Button button) {
         button.setLayoutX(25);
         button.setMaxWidth(rectangle.getX() - 50);
         button.setMinWidth(rectangle.getX() - 50);
@@ -128,7 +129,7 @@ public class Controller {
         root.getChildren().add(button);
     }
 
-    private boolean isBoardClicked(MouseEvent mouseEvent) {
+    private boolean isBoardClicked(@NotNull MouseEvent mouseEvent) {
         return rectangle.contains(mouseEvent.getX() + 10, mouseEvent.getY() + 10)
                 && rectangle.contains(mouseEvent.getX() - 10, mouseEvent.getY() - 10);
     }

@@ -6,6 +6,7 @@ import main.graph.Delta;
 import main.graph.Graph;
 import main.graph.Utils;
 import main.graph.Vertex;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -27,7 +28,7 @@ public class PreProcessor {
                     - 2;
     }
 
-    public int BlueDelta(Polygon delta, List<Vertex> vertexList) {
+    public int BlueDelta(Polygon delta, @NotNull List<Vertex> vertexList) {
         int temp = 0;
         for (Vertex vertex : vertexList)
             if (delta.contains(vertex.getCircle().getCenterX(), vertex.getCircle().getCenterY())
@@ -44,7 +45,7 @@ public class PreProcessor {
                 && isConvexPolygon(mPE, mPEPrime);
     }
 
-    private boolean hasNoRedPoint(Delta delta, List<Vertex> vertexList) {
+    private boolean hasNoRedPoint(Delta delta, @NotNull List<Vertex> vertexList) {
         for (Vertex vertex : vertexList) {
             if (delta.getDelta().contains(
                     vertex.getCircle().getCenterX(),
@@ -56,7 +57,7 @@ public class PreProcessor {
         return true;
     }
 
-    private boolean haveDisjointInteriors(Delta mPE, Delta mPEPrime) {
+    private boolean haveDisjointInteriors(@NotNull Delta mPE, @NotNull Delta mPEPrime) {
         double a = Utils.calculateAofLine(mPE.getR(), mPEPrime.getQ());
         double b = Utils.calculateBofLine(mPE.getR(), a);
 
@@ -64,7 +65,7 @@ public class PreProcessor {
         return y < mPEPrime.getQ().getCircle().getCenterY();
     }
 
-    private boolean isConvexPolygon(Delta mPE, Delta mPEPrime) {
+    private boolean isConvexPolygon(@NotNull Delta mPE, @NotNull Delta mPEPrime) {
 
         double aUpper = Utils.calculateAofLine(mPE.getR(), mPE.getP());
         double bUpper = Utils.calculateBofLine(mPE.getR(), aUpper);
