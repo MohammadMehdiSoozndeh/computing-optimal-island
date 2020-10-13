@@ -11,6 +11,7 @@ public class Delta {
 
     private Polygon delta;
 
+    // Delta(r,p-q)
     public Delta(@NotNull Vertex r, @NotNull Vertex p, @NotNull Vertex q) {
         this.r = r;
         this.p = p;

@@ -19,7 +19,7 @@ public class PreProcessor {
     }
 
 
-    public long BlueB(int i, List<Polygon> deltaList) {
+    public long BlueB(int i, List<Delta> deltaList) {
         if (i == 1)
             return 2;
         else
@@ -28,10 +28,10 @@ public class PreProcessor {
                     - 2;
     }
 
-    public int BlueDelta(Polygon delta, @NotNull List<Vertex> vertexList) {
+    public int BlueDelta(Delta delta, @NotNull List<Vertex> vertexList) {
         int temp = 0;
         for (Vertex vertex : vertexList)
-            if (delta.contains(vertex.getCircle().getCenterX(), vertex.getCircle().getCenterY())
+            if (delta.getDelta().contains(vertex.getCircle().getCenterX(), vertex.getCircle().getCenterY())
                     && vertex.getCircle().getFill().equals(Color.BLUE))
                 temp++;
 
