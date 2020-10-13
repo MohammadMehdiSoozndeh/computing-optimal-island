@@ -7,11 +7,11 @@ public class Vertex {
     public static final double NEIGHBORHOOD_DISTANCE = 25.0;
 
     private Circle circle;
-    private String label;
+    private String globalLabel;
 
-    public Vertex(Circle circle, String label) {
+    public Vertex(Circle circle, String globalLabel) {
         this.circle = circle;
-        this.label = label;
+        this.globalLabel = globalLabel;
     }
 
     public Vertex(Circle circle) {
@@ -40,19 +40,17 @@ public class Vertex {
         this.circle = circle;
     }
 
-    public String getLabel() {
-        return label;
+    public String getGlobalLabel() {
+        return globalLabel;
     }
 
-    public void setLabel(String label) {
-        this.label = label;
+    public void setGlobalLabel(String globalLabel) {
+        this.globalLabel = globalLabel;
     }
-
-
 
     @Override
     public String toString() {
-        return "\n\t" + label + " : " + circle.getFill().toString() +
+        return "\n\t" + globalLabel + " : " + circle.getFill().toString() +
                 "\t X:" + (float) circle.getCenterX() + "\t Y:" + (float) circle.getCenterY();
     }
 }

@@ -45,7 +45,7 @@ public class PreProcessor {
                 && isConvexPolygon(mPE, mPEPrime);
     }
 
-    private boolean hasNoRedPoint(Delta delta, @NotNull List<Vertex> vertexList) {
+    public static boolean hasNoRedPoint(Delta delta, @NotNull List<Vertex> vertexList) {
         for (Vertex vertex : vertexList) {
             if (delta.getDelta().contains(
                     vertex.getCircle().getCenterX(),
