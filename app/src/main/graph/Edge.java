@@ -13,6 +13,8 @@ public class Edge {
 
     private Direction direction;
 
+    private double angel;
+
     public Edge(Vertex p, Vertex q) {
         this.p = p;
         this.q = q;
@@ -64,6 +66,14 @@ public class Edge {
 
     public void setDirection(Direction direction) {
         this.direction = direction;
+    }
+
+    public double getAngel() {
+        return angel;
+    }
+
+    public void setAngel(double angel) {
+        this.angel = angel;
     }
 
     public static class Label {

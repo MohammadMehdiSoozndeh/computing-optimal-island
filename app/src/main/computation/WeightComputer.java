@@ -11,15 +11,19 @@ public class WeightComputer {
 
     private Graph graph;
 
+    private PreProcessor preProcessor;
+
     public WeightComputer(@NotNull Graph graph) {
         this.graph = graph;
         graph.sortY();
+        preProcessor = new PreProcessor(graph);
     }
 
     public void run() {
         for (int i = 0; i < graph.getVertexList().size(); i++) {
-            List<Point> orderedPoints = orderPointsBelowHp(i, graph.getVertexList().get(i));
-            List<Edge> fineEdgesBelowHp = fineEdgesBelowHp(graph.getVertexList().get(i), orderedPoints);
+            Vertex p = graph.getVertexList().get(i);
+            List<Point> orderedPoints = orderPointsBelowHp(i, p);
+            List<Edge> fineEdgesBelowHp = fineEdgesBelowHp(p, orderedPoints);
         }
     }
 
@@ -71,6 +75,41 @@ public class WeightComputer {
             }
         }
         return fineEdgesBelowHp;
+    }
+
+    private void processEdgesContainsP(Point p, List<Point> orderedPoints, List<Edge> fineEdgesBelowHp) {
+        for (Point pi : orderedPoints) {
+            List<Edge> Lai = new ArrayList<>(); // page 5 of paper, list of incoming edges to Pi; La,i = {a1,i , ... , aq,i}
+            List<Edge> Lbi = new ArrayList<>(); // page 5 of paper, list of outgoing edges to Pi; Lb,i = {b1,i , ... , bq,i}
+
+            for (Edge e : fineEdgesBelowHp) {
+                if (e.getQ().equals(pi))
+                    Lai.add(e);
+                else if (e.getP().equals(pi))
+                    Lbi.add(e);
+
+                double angel = Utils.calculateAofLine(e.getP(), e.getQ());
+                e.setAngel(angel);
+
+                Delta delta = new Delta(p, e.getP(), e.getQ());
+                int weight = preProcessor.BlueDelta(delta, graph.getVertexList());
+                e.setWeight(weight);
+            }
+
+            Lai.sort((o1, o2) -> (int) (o2.getAngel() - o1.getAngel()));
+            Lbi.sort((o1, o2) -> (int) (o1.getAngel() - o2.getAngel()));
+
+            int maxWeight = Lai.get(0).getWeight();
+            int hl = 0;
+            for (int i = 0; i < Lai.size(); i++) {
+                if (Lai.get(i).getWeight() > maxWeight) {
+                    hl = i;
+                    maxWeight = Lai.get(i).getWeight();
+                }
+            }
+            // TODO: 10/19/2020  Begin Observation 2
+
+        }
     }
 
 }
