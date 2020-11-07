@@ -99,16 +99,34 @@ public class WeightComputer {
             Lai.sort((o1, o2) -> (int) (o2.getAngel() - o1.getAngel()));
             Lbi.sort((o1, o2) -> (int) (o1.getAngel() - o2.getAngel()));
 
-            int maxWeight = Lai.get(0).getWeight();
-            int hl = 0;
-            for (int i = 0; i < Lai.size(); i++) {
-                if (Lai.get(i).getWeight() > maxWeight) {
-                    hl = i;
-                    maxWeight = Lai.get(i).getWeight();
-                }
-            }
-            // TODO: 10/19/2020  Begin Observation 2
+            observation2(p, Lai, Lbi);
+        }
+    }
 
+    private void observation2(Point p, List<Edge> Lai, List<Edge> Lbi) {
+        for (Edge bmi : Lbi) {
+            int smIndex = 0;
+            Delta deltaB = new Delta(p, bmi.getP(), bmi.getQ());
+            for (int i = Lai.size() - 1; i >= 0; i--) {
+                Delta deltaA = new Delta(p, Lai.get(i).getP(), Lai.get(i).getQ());
+                if (!preProcessor.isPCompatible(deltaA, deltaB)) continue;
+                smIndex = i;
+            }
+            if (smIndex == 0)
+                bmi.setWeight(preProcessor.BlueDelta(deltaB, graph.getVertexList()));
+            else {
+                int max = Lai.get(0).getWeight();
+                int hsm = 0;
+                for (int i = 0; i < smIndex; i++) {
+                    if (Lai.get(i).getWeight() > max) {
+                        hsm = i;
+                        max = Lai.get(i).getWeight();
+                    }
+                }
+
+                bmi.setPrev(Lai.get(hsm));
+                bmi.setWeight(Lai.get(hsm).getWeight() + preProcessor.BlueDelta(deltaB, graph.getVertexList()) - 2);
+            }
         }
     }
 
