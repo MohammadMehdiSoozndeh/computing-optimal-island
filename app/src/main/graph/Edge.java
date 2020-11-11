@@ -111,4 +111,17 @@ public class Edge {
             this.index2 = index2;
         }
     }
+
+    @Override
+    public String toString() {
+        return "Edge{" +
+                "p=" + p +
+                ", q=" + q +
+                ", prev=" + prev +
+                ", weight=" + weight +
+                ", label=" + label +
+                ", direction=" + direction +
+                ", angel=" + angel +
+                '}';
+    }
 }

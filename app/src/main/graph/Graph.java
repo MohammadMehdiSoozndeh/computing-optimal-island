@@ -76,20 +76,19 @@ public class Graph {
     private void errorCreatingVertex() {
     }
 
-    public void addVertex(Vertex vertex) {
-        vertexList.add(vertex);
-    }
-
     public List<Vertex> getVertexList() {
         return vertexList;
     }
 
-    public void setVertexList(List<Vertex> vertexList) {
-        this.vertexList = vertexList;
-    }
-
     public void sortY() {
         vertexList.sort(new SortByY());
+    }
+
+    @Override
+    public String toString() {
+        return " Graph {" +
+                "vertexList=" + vertexList +
+                '}';
     }
 
     public static class VertexColorGenerator {
@@ -163,5 +162,4 @@ public class Graph {
             return (int) (o1.getCircle().getCenterY() - o2.getCircle().getCenterY());
         }
     }
-
 }

@@ -6,19 +6,10 @@ import java.util.List;
 
 public class Point extends Vertex {
 
-    private int label;
     private double angel;
 
     private List<Edge> Lai;
     private List<Edge> Lbi;
-
-    public int getLabel() {
-        return label;
-    }
-
-    public void setLabel(int label) {
-        this.label = label;
-    }
 
     public double getAngel() {
         return angel;
@@ -50,5 +41,13 @@ public class Point extends Vertex {
 
     public void setLbi(List<Edge> lbi) {
         Lbi = lbi;
+    }
+
+    @Override
+    public String toString() {
+        return "\nPoint{" +
+                "GLabel=" + getGlobalLabel() +
+                "\t,angel=" + angel +
+                '}';
     }
 }

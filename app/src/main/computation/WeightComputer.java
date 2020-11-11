@@ -1,5 +1,6 @@
 package main.computation;
 
+import javafx.scene.paint.Color;
 import main.graph.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -9,19 +10,22 @@ import java.util.List;
 
 public class WeightComputer {
 
-    private Graph graph;
+    private final Graph graph;
 
-    private PreProcessor preProcessor;
+    private final PreProcessor preProcessor;
 
     public WeightComputer(@NotNull Graph graph) {
         this.graph = graph;
         graph.sortY();
+        System.out.println(graph.getVertexList().toString());
         preProcessor = new PreProcessor(graph);
     }
 
     public void run() {
         for (int i = 0; i < graph.getVertexList().size(); i++) {
             Vertex p = graph.getVertexList().get(i);
+            if (!p.getCircle().getFill().equals(Color.BLUE)) continue;
+            System.out.println(p);
             List<Point> orderedPoints = orderPointsBelowHp(i, p);
             List<Edge> fineEdgesBelowHp = fineEdgesBelowHp(p, orderedPoints);
 
@@ -46,9 +50,15 @@ public class WeightComputer {
 
         for (int i = pIndex + 1; i < graph.getVertexList().size(); i++) {
             Vertex vertex = graph.getVertexList().get(i);
+            if (!vertex.getCircle().getFill().equals(Color.BLUE)) continue;
             double angel = Utils.calculateAofLine(vertex, mP);
 
             Point point = new Point(vertex.getCircle(), vertex.getGlobalLabel());
+            if (angel == 0.0)
+                if (mP.getCircle().getCenterX() < vertex.getCircle().getCenterX())
+                    angel = 0.0001;
+                else
+                    angel = -1000;
             point.setAngel(angel);
 
             if (angel > 0)
@@ -57,15 +67,14 @@ public class WeightComputer {
                 negativeA.add(point);
         }
 
-        positiveA.sort((p1, p2) -> (int) (p1.getAngel() - p2.getAngel()));
-        negativeA.sort((p1, p2) -> (int) (p2.getAngel() - p1.getAngel()));
+        positiveA.sort((p1, p2) -> (int) ((p2.getAngel() - p1.getAngel()) * 10000));
+        negativeA.sort((p1, p2) -> (int) ((p2.getAngel() - p1.getAngel()) * 10000));
 
         List<Point> pointsBelowHp = new ArrayList<>();
-        pointsBelowHp.addAll(positiveA);
         pointsBelowHp.addAll(negativeA);
+        pointsBelowHp.addAll(positiveA);
 
-        for (int i = 0; i < pointsBelowHp.size(); i++)
-            pointsBelowHp.get(i).setLabel(i);
+        System.out.println(pointsBelowHp);
 
         return pointsBelowHp;
 
