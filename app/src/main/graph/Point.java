@@ -47,7 +47,7 @@ public class Point extends Vertex {
     public String toString() {
         return "\nPoint{" +
                 "GLabel=" + getGlobalLabel() +
-                "\t,angel=" + angel +
+                ",\tangel=" + angel +
                 '}';
     }
 }
