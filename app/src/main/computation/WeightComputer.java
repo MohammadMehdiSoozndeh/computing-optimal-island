@@ -25,12 +25,18 @@ public class WeightComputer {
             List<Point> orderedPoints = orderPointsBelowHp(i, p);
             List<Edge> fineEdgesBelowHp = fineEdgesBelowHp(p, orderedPoints);
 
+            if (fineEdgesBelowHp == null) continue;
+
             List<Point> pointsBelowP = processEdgesContainsP(p, orderedPoints, fineEdgesBelowHp);
             p.setBelowPointsList(pointsBelowP);
         }
 
         for (Vertex v : graph.getVertexList()) {
-            System.out.println(v.getBelowPointsList().get(v.getBelowPointsList().size() - 1).getLbi());
+            try {
+                System.out.println(v.getBelowPointsList().get(v.getBelowPointsList().size() - 1).getLbi());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 

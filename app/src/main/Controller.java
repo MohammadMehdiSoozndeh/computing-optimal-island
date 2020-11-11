@@ -3,11 +3,14 @@ package main;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import main.computation.WeightComputer;
 import main.graph.Graph;
 import main.graph.Vertex;
 import org.jetbrains.annotations.NotNull;
@@ -52,6 +55,7 @@ public class Controller {
         setBoardClickable();
         setGenerateRandomVerticesButton();
         setColorOptionsButton();
+        setRunAlgorithmButton();
         setClearButton();
         setSaveDataButton();
     }
@@ -98,9 +102,19 @@ public class Controller {
             if (!isVerticesConfirmed && isBoardClicked(mouseEvent) &&
                     !graph.isVertexCoordinationInvalid(mouseEvent.getX(), mouseEvent.getY())) {
                 randomVerticesGeneratorBtn.setDisable(true);
-                root.getChildren().add(graph.addVertexOnClick(mouseEvent).getCircle());
+                Vertex v = graph.addVertexOnClick(mouseEvent);
+                addVertexAndLabel(v);
             }
         });
+    }
+
+    private void addVertexAndLabel(Vertex v) {
+        root.getChildren().add(v.getCircle());
+        Text label = new Text(v.getGlobalLabel());
+        label.setX(v.getCircle().getCenterX() + 5);
+        label.setY(v.getCircle().getCenterY() + 5);
+        label.setFill(Color.BLACK);
+        root.getChildren().add(label);
     }
 
     private void setGenerateRandomVerticesButton() {
@@ -109,7 +123,7 @@ public class Controller {
             colorOptions.setDisable(true);
             graph.randomVertexGenerator();
             for (Vertex v : graph.getVertexList())
-                root.getChildren().add(v.getCircle());
+                addVertexAndLabel(v);
         });
     }
 
@@ -161,6 +175,13 @@ public class Controller {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+    }
+
+    private void setRunAlgorithmButton() {
+        runAlgorithmBtn.setOnMouseClicked(event -> {
+            WeightComputer weightComputer = new WeightComputer(graph);
+            weightComputer.run();
+        });
     }
 
 }

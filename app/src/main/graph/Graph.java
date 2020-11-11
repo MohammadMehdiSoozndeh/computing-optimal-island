@@ -16,8 +16,8 @@ import static main.Controller.*;
 
 public class Graph {
 
-    public static final int RANDOM_VERTICES_NUMBER_ORIGIN = 50;
-    public static final int RANDOM_VERTICES_NUMBER_BOUND = 150;
+    public static final int RANDOM_VERTICES_NUMBER_ORIGIN = 5;
+    public static final int RANDOM_VERTICES_NUMBER_BOUND = 10;
     public static final int VERTEX_RADIUS = 5;
 
     private List<Vertex> vertexList;
@@ -58,7 +58,7 @@ public class Graph {
         });
 
         Vertex vertex;
-        vertex = new Vertex(circle);
+        vertex = new Vertex(circle, vertexList.size() + "");
         vertexList.add(vertex);
         return vertex;
     }
