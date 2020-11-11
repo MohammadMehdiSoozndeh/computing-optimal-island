@@ -24,6 +24,13 @@ public class WeightComputer {
             Vertex p = graph.getVertexList().get(i);
             List<Point> orderedPoints = orderPointsBelowHp(i, p);
             List<Edge> fineEdgesBelowHp = fineEdgesBelowHp(p, orderedPoints);
+
+            List<Point> pointsBelowP = processEdgesContainsP(p, orderedPoints, fineEdgesBelowHp);
+            p.setBelowPointsList(pointsBelowP);
+        }
+
+        for (Vertex v : graph.getVertexList()) {
+            System.out.println(v.getBelowPointsList().get(v.getBelowPointsList().size() - 1).getLbi());
         }
     }
 
@@ -77,7 +84,8 @@ public class WeightComputer {
         return fineEdgesBelowHp;
     }
 
-    private void processEdgesContainsP(Point p, List<Point> orderedPoints, List<Edge> fineEdgesBelowHp) {
+    private List<Point> processEdgesContainsP(Vertex p, @NotNull List<Point> orderedPoints, List<Edge> fineEdgesBelowHp) {
+        List<Point> pointsContainsWeightedEdges = new ArrayList<>();
         for (Point pi : orderedPoints) {
             List<Edge> Lai = new ArrayList<>(); // page 5 of paper, list of incoming edges to Pi; La,i = {a1,i , ... , aq,i}
             List<Edge> Lbi = new ArrayList<>(); // page 5 of paper, list of outgoing edges to Pi; Lb,i = {b1,i , ... , bq,i}
@@ -99,11 +107,15 @@ public class WeightComputer {
             Lai.sort((o1, o2) -> (int) (o2.getAngel() - o1.getAngel()));
             Lbi.sort((o1, o2) -> (int) (o1.getAngel() - o2.getAngel()));
 
-            observation2(p, Lai, Lbi);
+            Point prevPi = null;
+            if (orderedPoints.indexOf(pi) > 0)
+                prevPi = orderedPoints.get(orderedPoints.indexOf(pi) - 1);
+            pointsContainsWeightedEdges.add(observation2(p, pi, prevPi, Lai, Lbi));  // for point pi
         }
+        return pointsContainsWeightedEdges;
     }
 
-    private void observation2(Point p, List<Edge> Lai, List<Edge> Lbi) {
+    private Point observation2(Vertex p, Point pi, @Nullable Point prevPi, List<Edge> Lai, @NotNull List<Edge> Lbi) {
         for (Edge bmi : Lbi) {
             int smIndex = 0;
             Delta deltaB = new Delta(p, bmi.getP(), bmi.getQ());
@@ -123,11 +135,18 @@ public class WeightComputer {
                         max = Lai.get(i).getWeight();
                     }
                 }
-
-                bmi.setPrev(Lai.get(hsm));
-                bmi.setWeight(Lai.get(hsm).getWeight() + preProcessor.BlueDelta(deltaB, graph.getVertexList()) - 2);
+                if (prevPi == null) continue;
+                for (Edge prevPBmi : prevPi.getLbi()) {
+                    if (prevPBmi.equals(Lai.get(hsm))) {
+                        bmi.setPrev(prevPBmi);
+                        bmi.setWeight(prevPBmi.getWeight() + preProcessor.BlueDelta(deltaB, graph.getVertexList()) - 2);
+                    }
+                }
             }
         }
+        pi.setLai(Lai);
+        pi.setLbi(Lbi);
+        return pi;
     }
 
 }

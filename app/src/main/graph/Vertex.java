@@ -2,12 +2,16 @@ package main.graph;
 
 import javafx.scene.shape.Circle;
 
+import java.util.List;
+
 public class Vertex {
 
     public static final double NEIGHBORHOOD_DISTANCE = 25.0;
 
     private Circle circle;
     private String globalLabel;
+
+    private List<Point> belowPointsList;
 
     public Vertex(Circle circle, String globalLabel) {
         this.circle = circle;
@@ -52,5 +56,13 @@ public class Vertex {
     public String toString() {
         return "\n\t" + globalLabel + " : " + circle.getFill().toString() +
                 "\t X:" + (float) circle.getCenterX() + "\t Y:" + (float) circle.getCenterY();
+    }
+
+    public List<Point> getBelowPointsList() {
+        return belowPointsList;
+    }
+
+    public void setBelowPointsList(List<Point> belowPointsList) {
+        this.belowPointsList = belowPointsList;
     }
 }
