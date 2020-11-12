@@ -56,4 +56,13 @@ public class Delta {
     public void setDelta(Polygon delta) {
         this.delta = delta;
     }
+
+    @Override
+    public String toString() {
+        return "Delta{" +
+                "r=" + r +
+                ", p=" + p +
+                ", q=" + q +
+                '}';
+    }
 }

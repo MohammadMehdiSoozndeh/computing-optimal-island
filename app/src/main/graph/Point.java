@@ -45,9 +45,11 @@ public class Point extends Vertex {
 
     @Override
     public String toString() {
-        return "\nPoint{" +
+        return "Point{" +
                 "GLabel=" + getGlobalLabel() +
-                ",\tangel=" + angel +
+//                ",angel=" + angel +
+//                "\n,Lai=" + Lai +
+//                "\n,Lbi=" + Lbi +
                 '}';
     }
 }

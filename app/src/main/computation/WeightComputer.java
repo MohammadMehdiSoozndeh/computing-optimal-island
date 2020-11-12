@@ -11,6 +11,7 @@ import java.util.List;
 public class WeightComputer {
 
     private final Graph graph;
+    private final List<Vertex> blueList;
 
     private final PreProcessor preProcessor;
 
@@ -19,37 +20,43 @@ public class WeightComputer {
         graph.sortY();
         System.out.println(graph.getVertexList().toString());
         preProcessor = new PreProcessor(graph);
+
+        blueList = new ArrayList<>();
+        for (Vertex v : graph.getVertexList())
+            if (v.getCircle().getFill().equals(Color.BLUE))
+                blueList.add(v);
     }
 
     public void run() {
-        for (int i = 0; i < graph.getVertexList().size(); i++) {
-            Vertex p = graph.getVertexList().get(i);
-            if (!p.getCircle().getFill().equals(Color.BLUE)) continue;
-            System.out.println(p);
+        for (int i = 0; i < blueList.size(); i++) {
+            if (i == blueList.size() - 1) continue;
+
+            Vertex p = blueList.get(i);
+            System.out.println("\tp, hp ->\t" + p);
             List<Point> orderedPoints = orderPointsBelowHp(i, p);
-            List<Edge> fineEdgesBelowHp = fineEdgesBelowHp(p, orderedPoints);
+            List<Edge> usableEdgesBelowHp = usableEdgesBelowHp(p, orderedPoints);
 
-            if (fineEdgesBelowHp == null) continue;
+            if (usableEdgesBelowHp == null || usableEdgesBelowHp.size() == 0) continue;
 
-            List<Point> pointsBelowP = processEdgesContainsP(p, orderedPoints, fineEdgesBelowHp);
+            List<Point> pointsBelowP = processEdgesContainsP(p, orderedPoints, usableEdgesBelowHp);
             p.setBelowPointsList(pointsBelowP);
         }
 
-        for (Vertex v : graph.getVertexList()) {
-            try {
-                System.out.println(v.getBelowPointsList().get(v.getBelowPointsList().size() - 1).getLbi());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+//        for (Vertex v : graph.getVertexList()) {
+//            try {
+//                System.out.println(v.getBelowPointsList().get(v.getBelowPointsList().size() - 1).getLbi());
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        }
     }
 
     private @NotNull List<Point> orderPointsBelowHp(int pIndex, Vertex mP) {
         List<Point> positiveA = new ArrayList<>();
         List<Point> negativeA = new ArrayList<>();
 
-        for (int i = pIndex + 1; i < graph.getVertexList().size(); i++) {
-            Vertex vertex = graph.getVertexList().get(i);
+        for (int i = pIndex + 1; i < blueList.size(); i++) {
+            Vertex vertex = blueList.get(i);
             if (!vertex.getCircle().getFill().equals(Color.BLUE)) continue;
             double angel = Utils.calculateAofLine(vertex, mP);
 
@@ -70,19 +77,18 @@ public class WeightComputer {
         positiveA.sort((p1, p2) -> (int) ((p2.getAngel() - p1.getAngel()) * 10000));
         negativeA.sort((p1, p2) -> (int) ((p2.getAngel() - p1.getAngel()) * 10000));
 
-        List<Point> pointsBelowHp = new ArrayList<>();
-        pointsBelowHp.addAll(negativeA);
-        pointsBelowHp.addAll(positiveA);
+        List<Point> orderPointsBelowHp = new ArrayList<>();
+        orderPointsBelowHp.addAll(negativeA);
+        orderPointsBelowHp.addAll(positiveA);
 
-        System.out.println(pointsBelowHp);
-
-        return pointsBelowHp;
+//        System.out.println("orderPointsBelowHp => " + orderPointsBelowHp);
+        return orderPointsBelowHp;
 
     }
 
-    private @Nullable List<Edge> fineEdgesBelowHp(Vertex p, @NotNull List<Point> orderedPoints) {
+    private @Nullable List<Edge> usableEdgesBelowHp(Vertex p, @NotNull List<Point> orderedPoints) {
         if (orderedPoints.size() < 2) return null;
-        List<Edge> fineEdgesBelowHp = new ArrayList<>();
+        List<Edge> usableEdgesBelowHp = new ArrayList<>();
 
         for (int i = 0; i < orderedPoints.size() - 1; i++) {
             for (int j = i + 1; j < orderedPoints.size(); j++) {
@@ -91,25 +97,49 @@ public class WeightComputer {
                 if (PreProcessor.hasNoRedPoint(delta, graph.getVertexList())) {
                     Edge edge = new Edge(orderedPoints.get(i), orderedPoints.get(j));
                     edge.setDirection(Direction.PtoQ);
-                    fineEdgesBelowHp.add(edge);
+                    usableEdgesBelowHp.add(edge);
                 }
 
             }
         }
-        return fineEdgesBelowHp;
+//        System.out.println("usableEdgesBelowHp => " + usableEdgesBelowHp);
+        return usableEdgesBelowHp;
     }
 
     private List<Point> processEdgesContainsP(Vertex p, @NotNull List<Point> orderedPoints, List<Edge> fineEdgesBelowHp) {
         List<Point> pointsContainsWeightedEdges = new ArrayList<>();
         for (Point pi : orderedPoints) {
-            List<Edge> Lai = new ArrayList<>(); // page 5 of paper, list of incoming edges to Pi; La,i = {a1,i , ... , aq,i}
-            List<Edge> Lbi = new ArrayList<>(); // page 5 of paper, list of outgoing edges to Pi; Lb,i = {b1,i , ... , bq,i}
+            List<Edge> LaiFirst = new ArrayList<>(); // page 5 of paper, list of incoming edges to Pi; La,i = {a1,i , ... , aq,i}
+            List<Edge> LaiNext = new ArrayList<>(); // page 5 of paper, list of incoming edges to Pi; La,i = {a1,i , ... , aq,i}
+            List<Edge> LbiFirst = new ArrayList<>(); // page 5 of paper, list of outgoing edges to Pi; Lb,i = {b1,i , ... , bq,i}
+            List<Edge> LbiNext = new ArrayList<>(); // page 5 of paper, list of outgoing edges to Pi; Lb,i = {b1,i , ... , bq,i}
 
             for (Edge e : fineEdgesBelowHp) {
-                if (e.getQ().equals(pi))
-                    Lai.add(e);
-                else if (e.getP().equals(pi))
-                    Lbi.add(e);
+                if (e.getQ().equals(pi)) {                                                      // incoming
+                    if (pi.getCircle().getCenterX() < p.getCircle().getCenterX()) {             // pi is left of p
+                        if (pi.getCircle().getCenterX() < e.getP().getCircle().getCenterX())    // incoming point is top right of pi
+                            LaiFirst.add(e);
+                        else                                                                    // incoming point is top left of pi
+                            LaiNext.add(e);
+                    } else {                                                                    // pi is right of p
+                        if (pi.getCircle().getCenterX() < e.getP().getCircle().getCenterX())    // incoming point is bottom right of pi
+                            LaiNext.add(e);
+                        else                                                                    // incoming point is bottom left of pi
+                            LaiFirst.add(e);
+                    }
+                } else if (e.getP().equals(pi)) {                                               // outgoing
+                    if (pi.getCircle().getCenterX() < p.getCircle().getCenterX()) {             // pi is left of p
+                        if (pi.getCircle().getCenterX() < e.getQ().getCircle().getCenterX())    // outgoing point is bottom right of pi
+                            LbiFirst.add(e);
+                        else                                                                    // outgoing point is bottom left of pi
+                            LbiNext.add(e);
+                    } else {                                                                    // pi is right of p
+                        if (pi.getCircle().getCenterX() < e.getQ().getCircle().getCenterX())    // outgoing point is top right of pi
+                            LbiNext.add(e);
+                        else                                                                    // outgoing point is top left of pi
+                            LbiFirst.add(e);
+                    }
+                }
 
                 double angel = Utils.calculateAofLine(e.getP(), e.getQ());
                 e.setAngel(angel);
@@ -119,8 +149,19 @@ public class WeightComputer {
                 e.setWeight(weight);
             }
 
-            Lai.sort((o1, o2) -> (int) (o2.getAngel() - o1.getAngel()));
-            Lbi.sort((o1, o2) -> (int) (o1.getAngel() - o2.getAngel()));
+            LaiFirst.sort((o1, o2) -> (int) ((o2.getAngel() - o1.getAngel()) * 10000));
+            LaiNext.sort((o1, o2) -> (int) ((o2.getAngel() - o1.getAngel()) * 10000));
+            LbiFirst.sort((o1, o2) -> (int) ((o1.getAngel() - o2.getAngel()) * 10000));
+            LbiNext.sort((o1, o2) -> (int) ((o1.getAngel() - o2.getAngel()) * 10000));
+
+            List<Edge> Lai = new ArrayList<>();
+            Lai.addAll(LaiFirst);
+            Lai.addAll(LaiNext);
+            List<Edge> Lbi = new ArrayList<>();
+            Lbi.addAll(LbiFirst);
+            Lbi.addAll(LbiNext);
+            System.out.println("Lai => " + Lai);
+            System.out.println("Lbi => " + Lbi);
 
             Point prevPi = null;
             if (orderedPoints.indexOf(pi) > 0)
