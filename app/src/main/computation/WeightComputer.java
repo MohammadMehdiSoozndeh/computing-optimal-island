@@ -106,13 +106,13 @@ public class WeightComputer {
         return usableEdgesBelowHp;
     }
 
-    private List<Point> processEdgesContainsP(Vertex p, @NotNull List<Point> orderedPoints, List<Edge> fineEdgesBelowHp) {
+    private @NotNull List<Point> processEdgesContainsP(Vertex p, @NotNull List<Point> orderedPoints, List<Edge> fineEdgesBelowHp) {
         List<Point> pointsContainsWeightedEdges = new ArrayList<>();
         for (Point pi : orderedPoints) {
-            List<Edge> LaiFirst = new ArrayList<>(); // page 5 of paper, list of incoming edges to Pi; La,i = {a1,i , ... , aq,i}
-            List<Edge> LaiNext = new ArrayList<>(); // page 5 of paper, list of incoming edges to Pi; La,i = {a1,i , ... , aq,i}
-            List<Edge> LbiFirst = new ArrayList<>(); // page 5 of paper, list of outgoing edges to Pi; Lb,i = {b1,i , ... , bq,i}
-            List<Edge> LbiNext = new ArrayList<>(); // page 5 of paper, list of outgoing edges to Pi; Lb,i = {b1,i , ... , bq,i}
+            List<Edge> LaiFirst = new ArrayList<>();    // page 5 of paper, list of incoming edges to Pi; La,i = {a1,i , ... , aq,i}
+            List<Edge> LaiNext = new ArrayList<>();     // page 5 of paper, list of incoming edges to Pi; La,i = {a1,i , ... , aq,i}
+            List<Edge> LbiFirst = new ArrayList<>();    // page 5 of paper, list of outgoing edges to Pi; Lb,i = {b1,i , ... , bq,i}
+            List<Edge> LbiNext = new ArrayList<>();     // page 5 of paper, list of outgoing edges to Pi; Lb,i = {b1,i , ... , bq,i}
 
             for (Edge e : fineEdgesBelowHp) {
                 if (e.getQ().equals(pi)) {                                                      // incoming
@@ -160,8 +160,8 @@ public class WeightComputer {
             List<Edge> Lbi = new ArrayList<>();
             Lbi.addAll(LbiFirst);
             Lbi.addAll(LbiNext);
-            System.out.println("Lai => " + Lai);
-            System.out.println("Lbi => " + Lbi);
+//            System.out.println("Lai => " + Lai);
+//            System.out.println("Lbi => " + Lbi);
 
             Point prevPi = null;
             if (orderedPoints.indexOf(pi) > 0)
