@@ -1,7 +1,7 @@
 package main.computation;
 
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Polygon;
+import javafx.scene.shape.Circle;
 import main.graph.Delta;
 import main.graph.Graph;
 import main.graph.Utils;
@@ -18,33 +18,6 @@ public class PreProcessor {
         this.graph = graph;
     }
 
-
-    public long BlueB(int i, List<Delta> deltaList) {
-        if (i == 1)
-            return 2;
-        else
-            return BlueB(i - 1, deltaList.subList(0, deltaList.size() - 2))
-                    + BlueDelta(deltaList.get(deltaList.size() - 1), graph.getVertexList())
-                    - 2;
-    }
-
-    public int BlueDelta(Delta delta, @NotNull List<Vertex> vertexList) {
-        int temp = 0;
-        for (Vertex vertex : vertexList)
-            if (delta.getDelta().contains(vertex.getCircle().getCenterX(), vertex.getCircle().getCenterY())
-                    && vertex.getCircle().getFill().equals(Color.BLUE))
-                temp++;
-
-        return temp;
-    }
-
-
-    public boolean isPCompatible(Delta mPE, Delta mPEPrime) {
-        return hasNoRedPoint(mPE, graph.getVertexList()) && hasNoRedPoint(mPEPrime, graph.getVertexList())
-                && haveDisjointInteriors(mPE, mPEPrime)
-                && isConvexPolygon(mPE, mPEPrime);
-    }
-
     public static boolean hasNoRedPoint(Delta delta, @NotNull List<Vertex> vertexList) {
         for (Vertex vertex : vertexList) {
             if (delta.getDelta().contains(
@@ -57,27 +30,52 @@ public class PreProcessor {
         return true;
     }
 
+    public long BlueB(int i, List<Delta> deltaList) {
+        if (i == 1)
+            return 2;
+        else
+            return BlueB(i - 1, deltaList.subList(0, deltaList.size() - 2))
+                    + BlueDelta(deltaList.get(deltaList.size() - 1), graph.getVertexList())
+                    - 2;
+    }
+
+    public int BlueDelta(Delta delta, @NotNull List<Vertex> vertexList) {
+        int temp = 0;
+        for (Vertex vertex : vertexList) {
+            if (vertex.getGlobalLabel().equals(delta.getP().getGlobalLabel())) continue;
+            if (delta.getDelta().contains(vertex.getCircle().getCenterX(), vertex.getCircle().getCenterY())
+                    && vertex.getCircle().getFill().equals(Color.BLUE))
+                temp++;
+        }
+        return temp;
+    }
+
+    public boolean isPCompatible(Delta mPE, Delta mPEPrime) {
+        return hasNoRedPoint(mPE, graph.getVertexList()) && hasNoRedPoint(mPEPrime, graph.getVertexList())
+                && haveDisjointInteriors(mPE, mPEPrime)
+                && isConvexPolygon(mPE, mPEPrime);
+    }
+
     private boolean haveDisjointInteriors(@NotNull Delta mPE, @NotNull Delta mPEPrime) {
-        double a = Utils.calculateAofLine(mPE.getR(), mPEPrime.getQ());
+        double a = Utils.calculateAofLine(mPE.getR(), mPEPrime.getP());
         double b = Utils.calculateBofLine(mPE.getR(), a);
 
-        double y = (a * mPEPrime.getQ().getCircle().getCenterX()) + b;
-        return y < mPEPrime.getQ().getCircle().getCenterY();
+        double yOnLine = (a * mPEPrime.getQ().getCircle().getCenterX()) + b;
+        double xOnLine = (mPEPrime.getQ().getCircle().getCenterY() - b) / a;
+
+        Circle target = mPEPrime.getQ().getCircle();
+
+        return ((a > 0 && yOnLine > target.getCenterY()) || (a < 0 && yOnLine < target.getCenterY()))
+                && xOnLine < target.getCenterX();
     }
 
     private boolean isConvexPolygon(@NotNull Delta mPE, @NotNull Delta mPEPrime) {
+        double a = Utils.calculateAofLine(mPE.getP(), mPEPrime.getQ());
+        double b = Utils.calculateBofLine(mPEPrime.getQ(), a);
 
-        double aUpper = Utils.calculateAofLine(mPE.getR(), mPE.getP());
-        double bUpper = Utils.calculateBofLine(mPE.getR(), aUpper);
-
-        double aLower = Utils.calculateAofLine(mPE.getP(), mPEPrime.getP());
-        double bLower = Utils.calculateBofLine(mPE.getP(), aLower);
-
-        double yUpper = (aUpper * mPEPrime.getQ().getCircle().getCenterX()) + bUpper;
-        double yLower = (aLower * mPEPrime.getQ().getCircle().getCenterX()) + bLower;
-
-        double yS = mPEPrime.getQ().getCircle().getCenterY();
-        return yS < yLower && yS > yUpper;
+        Circle target = mPE.getQ().getCircle();
+        double yOnTheLine = a * target.getCenterX() + b;
+        return yOnTheLine < target.getCenterY();
     }
 
 }
