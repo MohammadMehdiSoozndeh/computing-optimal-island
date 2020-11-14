@@ -43,11 +43,13 @@ public class PreProcessor {
         int temp = 0;
         for (Vertex vertex : vertexList) {
             if (vertex.getGlobalLabel().equals(delta.getP().getGlobalLabel())) continue;
+            if (vertex.getGlobalLabel().equals(delta.getQ().getGlobalLabel())) continue;
+            if (vertex.getGlobalLabel().equals(delta.getR().getGlobalLabel())) continue;
             if (delta.getDelta().contains(vertex.getCircle().getCenterX(), vertex.getCircle().getCenterY())
                     && vertex.getCircle().getFill().equals(Color.BLUE))
                 temp++;
         }
-        return temp;
+        return temp + 3;
     }
 
     public boolean isPCompatible(Delta mPE, Delta mPEPrime) {

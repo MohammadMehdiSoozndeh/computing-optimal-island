@@ -28,6 +28,7 @@ public class WeightComputer {
     }
 
     public void run() {
+        List<Point> pointsBelowP = new ArrayList<>();
         for (int i = 0; i < blueList.size(); i++) {
             if (i == blueList.size() - 1) continue;
 
@@ -38,17 +39,29 @@ public class WeightComputer {
 
             if (usableEdgesBelowHp == null || usableEdgesBelowHp.size() == 0) continue;
 
-            List<Point> pointsBelowP = processEdgesContainsP(p, orderedPoints, usableEdgesBelowHp);
+            pointsBelowP = processEdgesContainsP(p, orderedPoints, usableEdgesBelowHp);
             p.setBelowPointsList(pointsBelowP);
         }
 
-//        for (Vertex v : graph.getVertexList()) {
-//            try {
-//                System.out.println(v.getBelowPointsList().get(v.getBelowPointsList().size() - 1).getLbi());
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//        }
+        int max = 0;
+        Edge maxE = null;
+        Vertex maxP = null;
+        for (Vertex p : blueList) {
+            if (p == null || p.getBelowPointsList() == null) continue;
+            for (Point pi : p.getBelowPointsList()) {
+                if (pi == null || pi.getLbi() == null) continue;
+                for (Edge e : pi.getLbi()) {
+                    if (e == null) continue;
+                    if (max <= e.getWeight()) {
+                        max = e.getWeight();
+                        maxE = e;
+                        maxP = p;
+                    }
+                }
+            }
+        }
+        System.out.println(maxE);
+        System.out.println(maxP);
     }
 
     private @NotNull List<Point> orderPointsBelowHp(int pIndex, Vertex mP) {
@@ -172,7 +185,7 @@ public class WeightComputer {
     private Point observation2(Vertex p, Point pi, List<Point> prevPiz, List<Edge> Lai, @NotNull List<Edge> Lbi) {
         for (Edge bmi : Lbi) {
             int smIndex = -1;
-            System.out.println("\nbmi" + bmi);
+//            System.out.println("\nbmi" + bmi);
             Delta deltaB = new Delta(p, bmi.getP(), bmi.getQ());
             for (int i = 0; i < Lai.size(); i++) {
                 Delta deltaA = new Delta(p, Lai.get(i).getP(), Lai.get(i).getQ());
@@ -185,7 +198,8 @@ public class WeightComputer {
             else {
                 int max = Lai.get(0).getWeight();
                 int hsm = 0;
-                for (int i = 0; i < smIndex; i++) {
+//                System.out.println("aiz " + Lai);
+                for (int i = 0; i < smIndex + 1; i++) {
                     if (Lai.get(i).getWeight() > max) {
                         hsm = i;
                         max = Lai.get(i).getWeight();
@@ -194,16 +208,17 @@ public class WeightComputer {
                 bmi.setPrev(Lai.get(hsm));
                 for (Point prevPi : prevPiz) {
                     for (Edge ai : prevPi.getLbi()) {
-                        if (ai.getP().getGlobalLabel().equals(
-                                bmi.getPrev().getP().getGlobalLabel())) {
+                        if (ai.getQ().getGlobalLabel().equals(bmi.getPrev().getQ().getGlobalLabel())
+                                && ai.getP().getGlobalLabel().equals(bmi.getPrev().getP().getGlobalLabel())) {
                             bmi.setWeight(ai.getWeight() + preProcessor.BlueDelta(deltaB, graph.getVertexList()) - 2);
-                            bmi.setPrev(ai);
+//                            bmi.setPrev(ai);
+//                            System.out.println("ai => " + ai);
                         }
                     }
                 }
             }
-            System.out.println("bmi w ->\t" + bmi.getWeight());
-            System.out.println("bmi prev ->\t" + bmi.getPrev());
+//            System.out.println("bmi w ->\t" + bmi.getWeight());
+//            System.out.println("bmi prev ->\t" + bmi.getPrev());
         }
         pi.setLai(Lai);
         pi.setLbi(Lbi);

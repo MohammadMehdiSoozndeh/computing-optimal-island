@@ -118,7 +118,7 @@ public class Edge {
                 "p=" + p +
                 ", q=" + q +
 //                ", prev=" + prev +
-//                ", weight=" + weight +
+                ", weight=" + weight +
 //                ", label=" + label +
 //                ", direction=" + direction +
 //                ", angel=" + angel +
