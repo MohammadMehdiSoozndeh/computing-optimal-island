@@ -121,7 +121,7 @@ public class Edge {
 //                ", weight=" + weight +
 //                ", label=" + label +
 //                ", direction=" + direction +
-                ", angel=" + angel +
+//                ", angel=" + angel +
                 '}';
     }
 }
