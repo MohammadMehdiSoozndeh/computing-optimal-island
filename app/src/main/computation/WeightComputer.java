@@ -173,19 +173,16 @@ public class WeightComputer {
 
     private Point observation2(Vertex p, Point pi, @Nullable Point prevPi, List<Edge> Lai, @NotNull List<Edge> Lbi) {
         for (Edge bmi : Lbi) {
-            int smIndex = 0;
+            int smIndex = -1;
             System.out.println("bmi" + bmi);
             Delta deltaB = new Delta(p, bmi.getP(), bmi.getQ());
-            for (int i = Lai.size() - 1; i >= 0; i--) {
+            for (int i = 0; i < Lai.size(); i++) {
                 Delta deltaA = new Delta(p, Lai.get(i).getP(), Lai.get(i).getQ());
                 if (!preProcessor.isPCompatible(deltaA, deltaB)) continue;
-//                System.out.println("PCompatible:");
-//                System.out.println("deltaA -> " + deltaA);
-//                System.out.println("deltaB -> " + deltaB);
                 smIndex = i;
             }
-            System.out.println("smIndex" + smIndex);
-            if (smIndex == 0)
+            System.out.println("smIndex -> " + smIndex);
+            if (smIndex == -1)
                 bmi.setWeight(preProcessor.BlueDelta(deltaB, graph.getVertexList()));
             else {
                 int max = Lai.get(0).getWeight();
