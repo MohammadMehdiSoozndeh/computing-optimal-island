@@ -114,14 +114,13 @@ public class Edge {
 
     @Override
     public String toString() {
-        return "\nEdge{" +
-                "p=" + p +
-                ", q=" + q +
-//                ", prev=" + prev +
-                ", weight=" + weight +
+        return "\nEdge{"+ p +
+                " to " + q +
+                ",\nprev=" + prev +
+//                ", weight=" + weight +
 //                ", label=" + label +
 //                ", direction=" + direction +
 //                ", angel=" + angel +
-                '}';
+                "}";
     }
 }

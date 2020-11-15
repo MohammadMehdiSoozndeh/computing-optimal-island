@@ -16,8 +16,8 @@ import static main.Controller.*;
 
 public class Graph {
 
-    public static final int RANDOM_VERTICES_NUMBER_ORIGIN = 25;
-    public static final int RANDOM_VERTICES_NUMBER_BOUND = 30;
+    public static final int RANDOM_VERTICES_NUMBER_ORIGIN = 20;
+    public static final int RANDOM_VERTICES_NUMBER_BOUND = 25;
     public static final int VERTEX_RADIUS = 5;
 
     private List<Vertex> vertexList;
