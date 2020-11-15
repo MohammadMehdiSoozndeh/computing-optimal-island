@@ -33,7 +33,7 @@ public class WeightComputer {
             if (i == blueList.size() - 1) continue;
 
             Vertex p = blueList.get(i);
-            System.out.println("\n\n\tp, hp ->\t" + p);
+//            System.out.println("\n\n\tp, hp ->\t" + p);
             List<Point> orderedPoints = orderPointsBelowHp(i, p);
             List<Edge> usableEdgesBelowHp = usableEdgesBelowHp(p, orderedPoints);
 

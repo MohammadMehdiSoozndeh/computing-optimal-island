@@ -3,7 +3,6 @@ package main;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -29,21 +28,21 @@ public class Controller {
 
     private final Group root;
     private final Scene scene;
-    private final Stage primarySatge;
+    private final Stage primaryStage;
 
     private final boolean isVerticesConfirmed = false;
     private final Graph graph;
 
     private Rectangle rectangle;
     private Button randomVerticesGeneratorBtn;
-    private Button colorOptions;
+    private Button colorOptionsbtn;
     private Button runAlgorithmBtn;
     private Button clearBtn;
     private Button saveBtn;
     private Button infoBtn;
 
     public Controller(Stage primaryStage, Scene scene, Group root) {
-        this.primarySatge = primaryStage;
+        this.primaryStage = primaryStage;
         this.scene = scene;
         this.root = root;
         graph = new Graph(new ArrayList<>());
@@ -75,12 +74,12 @@ public class Controller {
         randomVerticesGeneratorBtn.setLayoutY(rectangle.getY() + 25);
         setupButtonView(randomVerticesGeneratorBtn);
 
-        colorOptions = new Button("Color Options");
-        colorOptions.setLayoutY(randomVerticesGeneratorBtn.getLayoutY() + BUTTONS_Y_SAFE_DISTANCE);
-        setupButtonView(colorOptions);
+        colorOptionsbtn = new Button("Color Options");
+        colorOptionsbtn.setLayoutY(randomVerticesGeneratorBtn.getLayoutY() + BUTTONS_Y_SAFE_DISTANCE);
+        setupButtonView(colorOptionsbtn);
 
         runAlgorithmBtn = new Button("Run Algorithm");
-        runAlgorithmBtn.setLayoutY(colorOptions.getLayoutY() + BUTTONS_Y_SAFE_DISTANCE);
+        runAlgorithmBtn.setLayoutY(colorOptionsbtn.getLayoutY() + BUTTONS_Y_SAFE_DISTANCE);
         setupButtonView(runAlgorithmBtn);
 
         clearBtn = new Button("Clear");
@@ -114,13 +113,14 @@ public class Controller {
         label.setX(v.getCircle().getCenterX() + 5);
         label.setY(v.getCircle().getCenterY() + 5);
         label.setFill(Color.BLACK);
+        v.setLabelText(label);
         root.getChildren().add(label);
     }
 
     private void setGenerateRandomVerticesButton() {
         randomVerticesGeneratorBtn.setOnMouseClicked(event -> {
             randomVerticesGeneratorBtn.setDisable(true);
-            colorOptions.setDisable(true);
+            colorOptionsbtn.setDisable(true);
             graph.randomVertexGenerator();
             for (Vertex v : graph.getVertexList())
                 addVertexAndLabel(v);
@@ -128,11 +128,19 @@ public class Controller {
     }
 
     private void setColorOptionsButton() {
-        colorOptions.setOnMouseClicked(mouseEvent -> Graph.VertexColorGenerator.colorOptionDialog());
+        colorOptionsbtn.setOnMouseClicked(mouseEvent -> Graph.VertexColorGenerator.colorOptionDialog());
     }
 
     private void setClearButton() {
-
+        clearBtn.setOnMouseClicked(event -> {
+            for (Vertex vertex : graph.getVertexList()) {
+                root.getChildren().remove(vertex.getCircle());
+                root.getChildren().remove(vertex.getLabelText());
+            }
+            graph.clearGraph();
+            randomVerticesGeneratorBtn.setDisable(false);
+            colorOptionsbtn.setDisable(false);
+        });
     }
 
     private void setupButtonView(@NotNull Button button) {
@@ -158,7 +166,7 @@ public class Controller {
             FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
             fileChooser.getExtensionFilters().add(extFilter);
 
-            File file = fileChooser.showSaveDialog(primarySatge);
+            File file = fileChooser.showSaveDialog(primaryStage);
 
             if (file != null) {
                 saveTextToFile(result, file);

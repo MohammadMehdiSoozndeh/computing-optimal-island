@@ -1,6 +1,7 @@
 package main.graph;
 
 import javafx.scene.shape.Circle;
+import javafx.scene.text.Text;
 
 import java.util.List;
 
@@ -10,6 +11,8 @@ public class Vertex {
 
     private Circle circle;
     private String globalLabel;
+
+    private Text labelText;
 
     private List<Point> belowPointsList;
 
@@ -58,6 +61,14 @@ public class Vertex {
 //                + " : " + circle.getFill().toString() +
 //                "\t X:" + (float) circle.getCenterX() + "\t Y:" + (float) circle.getCenterY()
                 ;
+    }
+
+    public Text getLabelText() {
+        return labelText;
+    }
+
+    public void setLabelText(Text labelText) {
+        this.labelText = labelText;
     }
 
     public List<Point> getBelowPointsList() {

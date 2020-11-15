@@ -44,7 +44,7 @@ public class Graph {
                     circle.setFill(VertexColorGenerator.getNextColor(circle.getFill().toString()));
                     System.out.println("X:" + (float) circle.getCenterX() + " Y:" + (float) circle.getCenterY());
                 });
-                vertexList.add(new Vertex(circle, i + ""));
+                vertexList.add(new Vertex(circle, vertexList.size() + ""));
             }
         }
     }
@@ -89,6 +89,10 @@ public class Graph {
         return " Graph {" +
                 "vertexList=" + vertexList +
                 '}';
+    }
+
+    public void clearGraph() {
+        vertexList.clear();
     }
 
     public static class VertexColorGenerator {
