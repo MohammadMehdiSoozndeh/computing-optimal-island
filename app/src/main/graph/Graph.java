@@ -6,7 +6,9 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Line;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -16,11 +18,12 @@ import static main.Controller.*;
 
 public class Graph {
 
-    public static final int RANDOM_VERTICES_NUMBER_ORIGIN = 20;
-    public static final int RANDOM_VERTICES_NUMBER_BOUND = 25;
+    public static final int RANDOM_VERTICES_NUMBER_ORIGIN = 8;
+    public static final int RANDOM_VERTICES_NUMBER_BOUND = 10;
     public static final int VERTEX_RADIUS = 5;
 
     private List<Vertex> vertexList;
+    private List<Line> lineList;
 
     public Graph(List<Vertex> vertexList) {
         this.vertexList = vertexList;
@@ -93,6 +96,21 @@ public class Graph {
 
     public void clearGraph() {
         vertexList.clear();
+        if (lineList != null) lineList.clear();
+    }
+
+    public List<Line> getLineList() {
+        return lineList;
+    }
+
+    public void setLineList(List<Line> lineList) {
+        this.lineList = lineList;
+    }
+
+    public void addLine(Line line) {
+        if (lineList == null)
+            lineList = new ArrayList<>();
+        lineList.add(line);
     }
 
     public static class VertexColorGenerator {

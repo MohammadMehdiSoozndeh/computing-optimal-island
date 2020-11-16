@@ -1,6 +1,7 @@
 package main.computation;
 
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
 import main.graph.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -60,12 +61,24 @@ public class WeightComputer {
                 }
             }
         }
-        System.out.println(maxP);
-//        while (maxE != null) {
+        if (max == 0) return;
+        System.out.println("\n\n" + maxP);
         System.out.println(maxE);
         System.out.println(max);
-//            maxE = maxE.getPrev();
-//        }
+        Line line = new Line(maxP.getCircle().getCenterX(), maxP.getCircle().getCenterY()
+                , maxE.getQ().getCircle().getCenterX(), maxE.getQ().getCircle().getCenterY());
+        graph.addLine(line);
+        while (maxE != null) {
+            line = new Line(maxE.getP().getCircle().getCenterX(), maxE.getP().getCircle().getCenterY(),
+                    maxE.getQ().getCircle().getCenterX(), maxE.getQ().getCircle().getCenterY());
+            graph.addLine(line);
+            if (maxE.getPrev() == null){
+                line = new Line(maxP.getCircle().getCenterX(), maxP.getCircle().getCenterY()
+                        , maxE.getP().getCircle().getCenterX(), maxE.getP().getCircle().getCenterY());
+                graph.addLine(line);
+            }
+            maxE = maxE.getPrev();
+        }
     }
 
     private @NotNull List<Point> orderPointsBelowHp(int pIndex, Vertex mP) {

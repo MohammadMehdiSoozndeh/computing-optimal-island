@@ -5,6 +5,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
@@ -35,7 +36,7 @@ public class Controller {
 
     private Rectangle rectangle;
     private Button randomVerticesGeneratorBtn;
-    private Button colorOptionsbtn;
+    private Button colorOptionsBtn;
     private Button runAlgorithmBtn;
     private Button clearBtn;
     private Button saveBtn;
@@ -74,12 +75,12 @@ public class Controller {
         randomVerticesGeneratorBtn.setLayoutY(rectangle.getY() + 25);
         setupButtonView(randomVerticesGeneratorBtn);
 
-        colorOptionsbtn = new Button("Color Options");
-        colorOptionsbtn.setLayoutY(randomVerticesGeneratorBtn.getLayoutY() + BUTTONS_Y_SAFE_DISTANCE);
-        setupButtonView(colorOptionsbtn);
+        colorOptionsBtn = new Button("Color Options");
+        colorOptionsBtn.setLayoutY(randomVerticesGeneratorBtn.getLayoutY() + BUTTONS_Y_SAFE_DISTANCE);
+        setupButtonView(colorOptionsBtn);
 
         runAlgorithmBtn = new Button("Run Algorithm");
-        runAlgorithmBtn.setLayoutY(colorOptionsbtn.getLayoutY() + BUTTONS_Y_SAFE_DISTANCE);
+        runAlgorithmBtn.setLayoutY(colorOptionsBtn.getLayoutY() + BUTTONS_Y_SAFE_DISTANCE);
         setupButtonView(runAlgorithmBtn);
 
         clearBtn = new Button("Clear");
@@ -120,7 +121,7 @@ public class Controller {
     private void setGenerateRandomVerticesButton() {
         randomVerticesGeneratorBtn.setOnMouseClicked(event -> {
             randomVerticesGeneratorBtn.setDisable(true);
-            colorOptionsbtn.setDisable(true);
+            colorOptionsBtn.setDisable(true);
             graph.randomVertexGenerator();
             for (Vertex v : graph.getVertexList())
                 addVertexAndLabel(v);
@@ -128,7 +129,7 @@ public class Controller {
     }
 
     private void setColorOptionsButton() {
-        colorOptionsbtn.setOnMouseClicked(mouseEvent -> Graph.VertexColorGenerator.colorOptionDialog());
+        colorOptionsBtn.setOnMouseClicked(mouseEvent -> Graph.VertexColorGenerator.colorOptionDialog());
     }
 
     private void setClearButton() {
@@ -137,9 +138,14 @@ public class Controller {
                 root.getChildren().remove(vertex.getCircle());
                 root.getChildren().remove(vertex.getLabelText());
             }
+            if (graph.getLineList() != null) {
+                for (Line line : graph.getLineList()) {
+                    root.getChildren().remove(line);
+                }
+            }
             graph.clearGraph();
             randomVerticesGeneratorBtn.setDisable(false);
-            colorOptionsbtn.setDisable(false);
+            colorOptionsBtn.setDisable(false);
         });
     }
 
@@ -189,7 +195,14 @@ public class Controller {
         runAlgorithmBtn.setOnMouseClicked(event -> {
             WeightComputer weightComputer = new WeightComputer(graph);
             weightComputer.run();
+            drawOptimalIsland();
         });
     }
 
+    public void drawOptimalIsland() {
+        if (graph.getLineList() == null) return;
+        for (Line line : graph.getLineList()) {
+            root.getChildren().add(line);
+        }
+    }
 }
