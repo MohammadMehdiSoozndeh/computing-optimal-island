@@ -67,14 +67,17 @@ public class WeightComputer {
         System.out.println(max);
         Line line = new Line(maxP.getCircle().getCenterX(), maxP.getCircle().getCenterY()
                 , maxE.getQ().getCircle().getCenterX(), maxE.getQ().getCircle().getCenterY());
+        line.setStroke(Color.BLUE);
         graph.addLine(line);
         while (maxE != null) {
             line = new Line(maxE.getP().getCircle().getCenterX(), maxE.getP().getCircle().getCenterY(),
                     maxE.getQ().getCircle().getCenterX(), maxE.getQ().getCircle().getCenterY());
+            line.setStroke(Color.BLUE);
             graph.addLine(line);
             if (maxE.getPrev() == null){
                 line = new Line(maxP.getCircle().getCenterX(), maxP.getCircle().getCenterY()
                         , maxE.getP().getCircle().getCenterX(), maxE.getP().getCircle().getCenterY());
+                line.setStroke(Color.BLUE);
                 graph.addLine(line);
             }
             maxE = maxE.getPrev();
