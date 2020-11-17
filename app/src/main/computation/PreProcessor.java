@@ -53,9 +53,15 @@ public class PreProcessor {
     }
 
     public boolean isPCompatible(Delta mPE, Delta mPEPrime) {
-        return hasNoRedPoint(mPE, graph.getVertexList()) && hasNoRedPoint(mPEPrime, graph.getVertexList())
+        System.out.println(mPE);
+        System.out.println(mPEPrime);
+        boolean isPCompatible = hasNoRedPoint(mPE, graph.getVertexList()) && hasNoRedPoint(mPEPrime, graph.getVertexList())
                 && haveDisjointInteriors(mPE, mPEPrime)
                 && isConvexPolygon(mPE, mPEPrime);
+        System.out.println("isPCompatible -> " + isPCompatible);
+        System.out.println("haveDisjointInteriors(mPE, mPEPrime) - > " + haveDisjointInteriors(mPE, mPEPrime));
+        System.out.println("isConvexPolygon(mPE, mPEPrime) - > " + isConvexPolygon(mPE, mPEPrime) + "\n");
+        return isPCompatible;
     }
 
     private boolean haveDisjointInteriors(@NotNull Delta mPE, @NotNull Delta mPEPrime) {
@@ -73,11 +79,20 @@ public class PreProcessor {
 
     private boolean isConvexPolygon(@NotNull Delta mPE, @NotNull Delta mPEPrime) {
         double a = Utils.calculateAofLine(mPE.getP(), mPEPrime.getQ());
-        double b = Utils.calculateBofLine(mPEPrime.getQ(), a);
+        double b = Utils.calculateBofLine(mPE.getP(), a);
 
-        Circle target = mPE.getQ().getCircle();
-        double yOnTheLine = a * target.getCenterX() + b;
-        return yOnTheLine < target.getCenterY();
+        double aPrime = Utils.calculateAofLine(mPE.getR(), mPE.getQ());
+        double bPrime = Utils.calculateBofLine(mPE.getR(), aPrime);
+
+        Vertex intersectionOfLines = Utils.theIntersectionPointOfTwoLine(a, b, aPrime, bPrime);
+        if (intersectionOfLines == null) return false;
+
+        System.out.println("mPE.getR() =>  " + mPE.getR());
+        System.out.println("intersectionOfLines => " + intersectionOfLines);
+
+        System.out.println("Utils.distance(mPE.getR(), mPE.getQ()) => " + Utils.distance(mPE.getR(), mPE.getQ()));
+        System.out.println("Utils.distance(mPE.getR(), intersectionOfLines) => " + Utils.distance(mPE.getR(), intersectionOfLines) + "\n");
+        return Utils.distance(mPE.getR(), mPE.getQ()) > Utils.distance(mPE.getR(), intersectionOfLines);
     }
 
 }

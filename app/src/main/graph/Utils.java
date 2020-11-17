@@ -1,5 +1,7 @@
 package main.graph;
 
+import javafx.scene.shape.Circle;
+
 public class Utils {
 
     // Linear equation in the X-Y Axis: y = Ax + B
@@ -18,6 +20,19 @@ public class Utils {
         double y1 = point.getCircle().getCenterY();
 
         return y1 - (mA * x1);
+    }
+
+    public static double distance(Vertex point1, Vertex point2) {
+        double x = point1.getCircle().getCenterX() - point2.getCircle().getCenterX();
+        double y = point1.getCircle().getCenterY() - point2.getCircle().getCenterY();
+        return Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
+    }
+
+    public static Vertex theIntersectionPointOfTwoLine(double a, double b, double aPrime, double bPrime) {
+        if (a - aPrime == 0) return null;
+        double x = (bPrime - b) / (a - aPrime);
+        double y = a * x + b;
+        return new Vertex(new Circle(x, y, 2));
     }
 
 }

@@ -57,9 +57,9 @@ public class Vertex {
 
     @Override
     public String toString() {
-        return " GL=" + globalLabel
-//                + " : " + circle.getFill().toString() +
-//                "\t X:" + (float) circle.getCenterX() + "\t Y:" + (float) circle.getCenterY()
+        return " GL=" + globalLabel +
+//              " : " + circle.getFill().toString() +
+                "\t X:" + (float) circle.getCenterX() + "\t Y:" + (float) circle.getCenterY()
                 ;
     }
 
