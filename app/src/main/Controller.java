@@ -110,7 +110,7 @@ public class Controller {
 
     private void addVertexAndLabel(Vertex v) {
         root.getChildren().add(v.getCircle());
-        Text label = new Text(v.getGlobalLabel());
+        Text label = new Text("p" + v.getGlobalLabel());
         label.setX(v.getCircle().getCenterX() + 5);
         label.setY(v.getCircle().getCenterY() + 5);
         label.setFill(Color.BLACK);

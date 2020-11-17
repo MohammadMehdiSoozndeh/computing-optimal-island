@@ -18,8 +18,8 @@ import static main.Controller.*;
 
 public class Graph {
 
-    public static final int RANDOM_VERTICES_NUMBER_ORIGIN = 20;
-    public static final int RANDOM_VERTICES_NUMBER_BOUND = 25;
+    public static final int RANDOM_VERTICES_NUMBER_ORIGIN = 10;
+    public static final int RANDOM_VERTICES_NUMBER_BOUND = 12;
     public static final int VERTEX_RADIUS = 5;
 
     private List<Vertex> vertexList;
@@ -68,9 +68,23 @@ public class Graph {
 
     public boolean isVertexCoordinationInvalid(double x, double y) {
         for (Vertex v : vertexList) {
-            if (v.isTooClose(x, y)) {
+            if (v.isTooClose(x, y) || v.getCircle().getCenterX() == x || v.getCircle().getCenterY() == y
+                    || isThreePointOnLine(x, y)) {
                 errorCreatingVertex();
                 return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean isThreePointOnLine(double x, double y) {
+        for (Vertex v : vertexList) {
+            for (Vertex o : vertexList) {
+                if (v.equals(o)) continue;
+                double a = Utils.calculateAofLine(v, o);
+                double b = Utils.calculateBofLine(o, a);
+                if (y == a * x + b)
+                    return true;
             }
         }
         return false;
