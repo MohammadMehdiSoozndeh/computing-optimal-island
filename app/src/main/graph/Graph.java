@@ -18,12 +18,14 @@ import static main.Controller.*;
 
 public class Graph {
 
-    public static final int RANDOM_VERTICES_NUMBER_ORIGIN = 200;
-    public static final int RANDOM_VERTICES_NUMBER_BOUND = 250;
+    public static final int RANDOM_VERTICES_NUMBER_ORIGIN = 20;
+    public static final int RANDOM_VERTICES_NUMBER_BOUND = 30;
     public static final int VERTEX_RADIUS = 5;
 
     private List<Vertex> vertexList;
     private List<Line> lineList;
+
+    private List<Vertex> islandBorderList;
 
     public Graph(List<Vertex> vertexList) {
         this.vertexList = vertexList;
@@ -111,9 +113,11 @@ public class Graph {
     public void clearGraph() {
         vertexList.clear();
         if (lineList != null) lineList.clear();
+        if (islandBorderList != null) islandBorderList.clear();
     }
 
     public List<Line> getLineList() {
+        if (lineList == null) lineList = new ArrayList<>();
         return lineList;
     }
 
@@ -125,6 +129,20 @@ public class Graph {
         if (lineList == null)
             lineList = new ArrayList<>();
         lineList.add(line);
+    }
+
+    public List<Vertex> getIslandBorderList() {
+        return islandBorderList;
+    }
+
+    public void setIslandBorderList(List<Vertex> islandBorderList) {
+        this.islandBorderList = islandBorderList;
+    }
+
+    public void addBorder(Vertex v) {
+        if (islandBorderList == null)
+            islandBorderList = new ArrayList<>();
+        islandBorderList.add(v);
     }
 
     public static class VertexColorGenerator {

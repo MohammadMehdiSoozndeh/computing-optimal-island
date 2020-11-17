@@ -31,7 +31,6 @@ public class Controller {
     private final Scene scene;
     private final Stage primaryStage;
 
-    private final boolean isVerticesConfirmed = false;
     private final Graph graph;
 
     private Rectangle rectangle;
@@ -82,14 +81,17 @@ public class Controller {
         runAlgorithmBtn = new Button("Run Algorithm");
         runAlgorithmBtn.setLayoutY(colorOptionsBtn.getLayoutY() + BUTTONS_Y_SAFE_DISTANCE);
         setupButtonView(runAlgorithmBtn);
+        runAlgorithmBtn.setDisable(true);
 
         clearBtn = new Button("Clear");
         clearBtn.setLayoutY(runAlgorithmBtn.getLayoutY() + 10.5 * BUTTONS_Y_SAFE_DISTANCE);
         setupButtonView(clearBtn);
+        clearBtn.setDisable(true);
 
         saveBtn = new Button("Save Data");
         saveBtn.setLayoutY(clearBtn.getLayoutY() + BUTTONS_Y_SAFE_DISTANCE);
         setupButtonView(saveBtn);
+        saveBtn.setDisable(true);
 
         infoBtn = new Button("Information & Documentation");
         infoBtn.setLayoutY(saveBtn.getLayoutY() + BUTTONS_Y_SAFE_DISTANCE);
@@ -99,9 +101,12 @@ public class Controller {
 
     private void setBoardClickable() {
         scene.setOnMouseClicked(mouseEvent -> {
-            if (!isVerticesConfirmed && isBoardClicked(mouseEvent) &&
+            if (isBoardClicked(mouseEvent) && graph.getLineList().size() == 0 &&
                     !graph.isVertexCoordinationInvalid(mouseEvent.getX(), mouseEvent.getY())) {
                 randomVerticesGeneratorBtn.setDisable(true);
+                saveBtn.setDisable(false);
+                clearBtn.setDisable(false);
+                runAlgorithmBtn.setDisable(false);
                 Vertex v = graph.addVertexOnClick(mouseEvent);
                 addVertexAndLabel(v);
             }
@@ -121,6 +126,9 @@ public class Controller {
     private void setGenerateRandomVerticesButton() {
         randomVerticesGeneratorBtn.setOnMouseClicked(event -> {
             randomVerticesGeneratorBtn.setDisable(true);
+            saveBtn.setDisable(false);
+            clearBtn.setDisable(false);
+            runAlgorithmBtn.setDisable(false);
             colorOptionsBtn.setDisable(true);
             graph.randomVertexGenerator();
             for (Vertex v : graph.getVertexList())
@@ -146,6 +154,9 @@ public class Controller {
             graph.clearGraph();
             randomVerticesGeneratorBtn.setDisable(false);
             colorOptionsBtn.setDisable(false);
+            saveBtn.setDisable(true);
+            clearBtn.setDisable(true);
+            runAlgorithmBtn.setDisable(true);
         });
     }
 
@@ -166,12 +177,14 @@ public class Controller {
         saveBtn.setOnMouseClicked(event -> {
             graph.sortY();
             String result = "Vertices: " + graph.getVertexList().toString();
+            result += "\n\n" + "Computing Optimal Blue Island Algorithm Result:\n" +
+                    "";
 
             FileChooser fileChooser = new FileChooser();
-
-            FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
+            FileChooser.ExtensionFilter extFilter =
+                    new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
             fileChooser.getExtensionFilters().add(extFilter);
-
+            fileChooser.setInitialFileName("COI_Result.txt");
             File file = fileChooser.showSaveDialog(primaryStage);
 
             if (file != null) {
@@ -196,6 +209,8 @@ public class Controller {
             WeightComputer weightComputer = new WeightComputer(graph);
             weightComputer.run();
             drawOptimalIsland();
+            colorOptionsBtn.setDisable(true);
+            runAlgorithmBtn.setDisable(true);
         });
     }
 
