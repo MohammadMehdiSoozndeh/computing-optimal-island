@@ -18,13 +18,11 @@ public class PreProcessor {
         this.graph = graph;
     }
 
-    public static boolean hasNoRedPoint(Delta delta, @NotNull List<Vertex> vertexList) {
+    public static boolean hasOnlyBluePoint(Delta delta, @NotNull List<Vertex> vertexList) {
         for (Vertex vertex : vertexList) {
-            if (delta.getDelta().contains(
-                    vertex.getCircle().getCenterX(),
-                    vertex.getCircle().getCenterY())
-                    &&
-                    vertex.getCircle().getFill().equals(Color.RED))
+            if (delta.getDelta().contains(vertex.getCircle().getCenterX(), vertex.getCircle().getCenterY()) &&
+                    (vertex.getCircle().getFill().equals(Color.RED) || vertex.getCircle().getFill().equals(Color.MAGENTA) ||
+                            vertex.getCircle().getFill().equals(Color.GREEN)))
                 return false;
         }
         return true;
@@ -55,7 +53,7 @@ public class PreProcessor {
     public boolean isPCompatible(Delta mPE, Delta mPEPrime) {
         System.out.println(mPE);
         System.out.println(mPEPrime);
-        boolean isPCompatible = hasNoRedPoint(mPE, graph.getVertexList()) && hasNoRedPoint(mPEPrime, graph.getVertexList())
+        boolean isPCompatible = hasOnlyBluePoint(mPE, graph.getVertexList()) && hasOnlyBluePoint(mPEPrime, graph.getVertexList())
                 && haveDisjointInteriors(mPE, mPEPrime)
                 && isConvexPolygon(mPE, mPEPrime);
         System.out.println("isPCompatible -> " + isPCompatible);

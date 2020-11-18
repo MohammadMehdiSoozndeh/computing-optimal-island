@@ -127,7 +127,7 @@ public class WeightComputer {
             for (int j = i + 1; j < orderedPoints.size(); j++) {
                 Delta delta = new Delta(p, orderedPoints.get(i), orderedPoints.get(j));
 
-                if (PreProcessor.hasNoRedPoint(delta, graph.getVertexList())) {
+                if (PreProcessor.hasOnlyBluePoint(delta, graph.getVertexList())) {
                     Edge edge = new Edge(orderedPoints.get(i), orderedPoints.get(j));
                     edge.setDirection(Direction.PtoQ);
                     usableEdgesBelowHp.add(edge);
