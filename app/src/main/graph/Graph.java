@@ -18,14 +18,15 @@ import static main.Controller.*;
 
 public class Graph {
 
-    public static final int RANDOM_VERTICES_NUMBER_ORIGIN = 20;
+    public static final int RANDOM_VERTICES_NUMBER_ORIGIN = 25;
     public static final int RANDOM_VERTICES_NUMBER_BOUND = 30;
     public static final int VERTEX_RADIUS = 5;
 
     private List<Vertex> vertexList;
     private List<Line> lineList;
 
-    private List<Vertex> islandBorderList;
+    private List<String> islandBorderList;
+    private int maxW;
 
     public Graph(List<Vertex> vertexList) {
         this.vertexList = vertexList;
@@ -131,18 +132,26 @@ public class Graph {
         lineList.add(line);
     }
 
-    public List<Vertex> getIslandBorderList() {
+    public List<String> getIslandBorderList() {
         return islandBorderList;
     }
 
-    public void setIslandBorderList(List<Vertex> islandBorderList) {
+    public void setIslandBorderList(List<String> islandBorderList) {
         this.islandBorderList = islandBorderList;
     }
 
-    public void addBorder(Vertex v) {
+    public void addBorder(String str) {
         if (islandBorderList == null)
             islandBorderList = new ArrayList<>();
-        islandBorderList.add(v);
+        islandBorderList.add(str);
+    }
+
+    public int getMaxW() {
+        return maxW;
+    }
+
+    public void setMaxW(int maxW) {
+        this.maxW = maxW;
     }
 
     public static class VertexColorGenerator {
@@ -213,7 +222,7 @@ public class Graph {
     private static class SortByY implements Comparator<Vertex> {
         @Override
         public int compare(Vertex o1, Vertex o2) {
-            return (int) (o1.getCircle().getCenterY() - o2.getCircle().getCenterY());
+            return (int) ((o1.getCircle().getCenterY() - o2.getCircle().getCenterY()) * 1000);
         }
     }
 }

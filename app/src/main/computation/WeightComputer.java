@@ -65,23 +65,23 @@ public class WeightComputer {
         System.out.println("\n\n" + maxP);
         System.out.println(maxE);
         System.out.println(max);
-        Line line = new Line(maxP.getCircle().getCenterX(), maxP.getCircle().getCenterY()
-                , maxE.getQ().getCircle().getCenterX(), maxE.getQ().getCircle().getCenterY());
-        line.setStroke(Color.BLUE);
-        graph.addLine(line);
+
+        addIslandBorder(maxP, maxE.getQ());
         while (maxE != null) {
-            line = new Line(maxE.getP().getCircle().getCenterX(), maxE.getP().getCircle().getCenterY(),
-                    maxE.getQ().getCircle().getCenterX(), maxE.getQ().getCircle().getCenterY());
-            line.setStroke(Color.BLUE);
-            graph.addLine(line);
-            if (maxE.getPrev() == null){
-                line = new Line(maxP.getCircle().getCenterX(), maxP.getCircle().getCenterY()
-                        , maxE.getP().getCircle().getCenterX(), maxE.getP().getCircle().getCenterY());
-                line.setStroke(Color.BLUE);
-                graph.addLine(line);
-            }
+            addIslandBorder(maxE.getP(), maxE.getQ());
+            if (maxE.getPrev() == null)
+                addIslandBorder(maxP, maxE.getP());
             maxE = maxE.getPrev();
         }
+        graph.setMaxW(max);
+    }
+
+    private void addIslandBorder(Vertex v1, Vertex v2) {
+        Line line = new Line(v1.getCircle().getCenterX(), v1.getCircle().getCenterY()
+                , v2.getCircle().getCenterX(), v2.getCircle().getCenterY());
+        line.setStroke(Color.BLUE);
+        graph.addLine(line);
+        graph.addBorder("\n" + v1.getGlobalLabel() + " to " + v2.getGlobalLabel());
     }
 
     private @NotNull List<Point> orderPointsBelowHp(int pIndex, Vertex mP) {

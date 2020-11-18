@@ -178,7 +178,8 @@ public class Controller {
             graph.sortY();
             String result = "Vertices: " + graph.getVertexList().toString();
             result += "\n\n" + "Computing Optimal Blue Island Algorithm Result:\n" +
-                    "";
+                    "Max Blue Point on Island: " + graph.getMaxW() + "\n" +
+                    graph.getIslandBorderList();
 
             FileChooser fileChooser = new FileChooser();
             FileChooser.ExtensionFilter extFilter =
