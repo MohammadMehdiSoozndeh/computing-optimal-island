@@ -19,7 +19,7 @@ import static main.Controller.*;
 public class Graph {
 
     public static final int RANDOM_VERTICES_NUMBER_ORIGIN = 50;
-    public static final int RANDOM_VERTICES_NUMBER_BOUND = 60;
+    public static final int RANDOM_VERTICES_NUMBER_BOUND = 70;
     public static final int VERTEX_RADIUS = 5;
 
     private List<Vertex> vertexList;
@@ -86,7 +86,7 @@ public class Graph {
                 if (v.equals(o)) continue;
                 double a = Utils.calculateAofLine(v, o);
                 double b = Utils.calculateBofLine(o, a);
-                if (y == a * x + b)
+                if (Math.abs(y - (a * x + b)) < 0.1)
                     return true;
             }
         }
