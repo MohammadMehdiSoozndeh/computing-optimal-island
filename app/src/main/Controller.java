@@ -57,6 +57,7 @@ public class Controller {
         setRunAlgorithmButton();
         setClearButton();
         setSaveDataButton();
+        setInfoBtn();
     }
 
     private void setupBoard() {
@@ -157,6 +158,18 @@ public class Controller {
             saveBtn.setDisable(true);
             clearBtn.setDisable(true);
             runAlgorithmBtn.setDisable(true);
+        });
+    }
+
+    private void setInfoBtn() {
+        infoBtn.setOnMouseClicked(event -> {
+            if (graph.getVertexList().get(0) == null) return;
+            if (graph.getVertexList().get(0).getLabelText().isVisible())
+                for (Vertex v : graph.getVertexList())
+                    v.getLabelText().setVisible(false);
+            else
+                for (Vertex v : graph.getVertexList())
+                    v.getLabelText().setVisible(true);
         });
     }
 
