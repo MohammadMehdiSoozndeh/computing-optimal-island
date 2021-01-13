@@ -34,7 +34,6 @@ public class WeightComputer {
             if (i == blueList.size() - 1) continue;
 
             Vertex p = blueList.get(i);
-//            System.out.println("\n\n\tp, hp ->\t" + p);
             List<Point> orderedPoints = orderPointsBelowHp(i, p);
             List<Edge> usableEdgesBelowHp = usableEdgesBelowHp(p, orderedPoints);
 
@@ -114,7 +113,6 @@ public class WeightComputer {
         orderPointsBelowHp.addAll(negativeA);
         orderPointsBelowHp.addAll(positiveA);
 
-//        System.out.println("orderPointsBelowHp => " + orderPointsBelowHp);
         return orderPointsBelowHp;
 
     }
@@ -134,7 +132,6 @@ public class WeightComputer {
 
             }
         }
-//        System.out.println("usableEdgesBelowHp => " + usableEdgesBelowHp);
         return usableEdgesBelowHp;
     }
 
@@ -188,8 +185,6 @@ public class WeightComputer {
             List<Edge> Lbi = new ArrayList<>();
             Lbi.addAll(LbiFirst);
             Lbi.addAll(LbiNext);
-//            System.out.println("Lai => " + Lai);
-//            System.out.println("Lbi => " + Lbi);
 
             observation2(p, pi, orderedPoints.subList(0, orderedPoints.indexOf(pi))
                     , Lai, Lbi);
@@ -199,8 +194,6 @@ public class WeightComputer {
     }
 
     private Point observation2(Vertex p, Point pi, List<Point> prevPiz, List<Edge> Lai, @NotNull List<Edge> Lbi) {
-//        System.out.println("\npi -> " + pi);
-
         for (Point prevPi : prevPiz) {
             for (Edge bi : prevPi.getLbi()) {
                 for (Edge ai : Lai) {
@@ -211,24 +204,19 @@ public class WeightComputer {
             }
         }
 
-//        System.out.println("Lai => " + Lai);
-
         for (Edge bmi : Lbi) {
             int smIndex = -1;
-//            System.out.println("\nbmi -> " + bmi);
             Delta deltaB = new Delta(p, bmi.getP(), bmi.getQ());
             for (int i = 0; i < Lai.size(); i++) {
                 Delta deltaA = new Delta(p, Lai.get(i).getP(), Lai.get(i).getQ());
                 if (!preProcessor.isPCompatible(deltaA, deltaB)) continue;
                 smIndex = i;
             }
-//            System.out.println("smIndex -> " + smIndex);
             if (smIndex == -1)
                 bmi.setWeight(preProcessor.BlueDelta(deltaB, graph.getVertexList()));
             else {
                 int max = Lai.get(0).getWeight();
                 int hsm = 0;
-//                System.out.println("aiz " + Lai);
                 for (int i = 0; i < smIndex + 1; i++) {
                     if (Lai.get(i).getWeight() > max) {
                         hsm = i;
@@ -242,17 +230,12 @@ public class WeightComputer {
                                 && bi.getP().getGlobalLabel().equals(bmi.getPrev().getP().getGlobalLabel())) {
                             bmi.setWeight(bi.getWeight() + preProcessor.BlueDelta(deltaB, graph.getVertexList()) - 2);
                             bmi.setPrev(bi);
-//                            System.out.println("bi => " + bi);
                         }
                     }
                 }
             }
-//            System.out.println("bmi w ->\t" + bmi.getWeight());
-//            System.out.println("bmi prev ->\t" + bmi.getPrev());
         }
-//        System.out.println("\nPi -> " + pi);
-//        System.out.println("Lai => " + Lai);
-//        System.out.println("Lbi => " + Lbi);
+
         pi.setLai(Lai);
         pi.setLbi(Lbi);
         return pi;
