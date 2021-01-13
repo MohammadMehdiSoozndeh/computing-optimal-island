@@ -94,7 +94,7 @@ public class Controller {
         setupButtonView(saveBtn);
         saveBtn.setDisable(true);
 
-        infoBtn = new Button("Information & Documentation");
+        infoBtn = new Button("Show/hide point's label");
         infoBtn.setLayoutY(saveBtn.getLayoutY() + BUTTONS_Y_SAFE_DISTANCE);
         setupButtonView(infoBtn);
 

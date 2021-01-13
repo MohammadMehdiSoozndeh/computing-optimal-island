@@ -19,9 +19,11 @@ public class Main extends Application {
     public void start(@NotNull Stage primaryStage) {
         Group root = new Group();
 
+        // set windows aspects and color
         Scene scene = new Scene(root, 1200, 850);
         scene.setFill(Color.rgb(225, 225, 225));
 
+        // set the main window's title
         primaryStage.setTitle("Computing Optimal Islands");
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
