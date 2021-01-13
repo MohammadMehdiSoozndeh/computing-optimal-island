@@ -18,11 +18,14 @@ import static main.Controller.*;
 
 public class Graph {
 
-    public static final int RANDOM_VERTICES_NUMBER_ORIGIN = 70;
-    public static final int RANDOM_VERTICES_NUMBER_BOUND = 75;
+    // Boundaries of random points generator
+    // TODO: 1/13/2021 set these two boundaries as you wish
+    public static final int RANDOM_VERTICES_NUMBER_ORIGIN = 70; // min
+    public static final int RANDOM_VERTICES_NUMBER_BOUND = 75;  // max
+
     public static final int VERTEX_RADIUS = 5;
 
-    private List<Vertex> vertexList;
+    private final List<Vertex> vertexList;
     private List<Line> lineList;
 
     private List<String> islandBorderList;
