@@ -11,20 +11,16 @@ public class Point extends Vertex {
     private List<Edge> Lai;
     private List<Edge> Lbi;
 
+    public Point(Circle circle, String globalLabel) {
+        super(circle, globalLabel);
+    }
+
     public double getAngel() {
         return angel;
     }
 
     public void setAngel(double angel) {
         this.angel = angel;
-    }
-
-    public Point(Circle circle, String globalLabel) {
-        super(circle, globalLabel);
-    }
-
-    public Point(Circle circle) {
-        super(circle);
     }
 
     public List<Edge> getLai() {
@@ -47,9 +43,6 @@ public class Point extends Vertex {
     public String toString() {
         return "\nPoint{" +
                 "GL=" + getGlobalLabel() +
-//                ",angel=" + angel +
-//                "\n,Lai=" + Lai +
-//                "\n,Lbi=" + Lbi +
                 "}";
     }
 }
