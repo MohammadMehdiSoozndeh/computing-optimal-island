@@ -100,6 +100,7 @@ public class Graph {
     }
 
     private void errorCreatingVertex() {
+        System.out.println("error creating vertex");
     }
 
     public List<Vertex> getVertexList() {
