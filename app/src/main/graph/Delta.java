@@ -5,13 +5,13 @@ import org.jetbrains.annotations.NotNull;
 
 public class Delta {
 
-    private Vertex r;
-    private Vertex p;
-    private Vertex q;
+    private final Vertex r;
+    private final Vertex p;
+    private final Vertex q;
 
-    private Polygon delta;
+    private final Polygon delta;
 
-    // Delta(r,p-q)
+    // △(r,p-q)
     public Delta(@NotNull Vertex r, @NotNull Vertex p, @NotNull Vertex q) {
         this.r = r;
         this.p = p;
@@ -29,32 +29,16 @@ public class Delta {
         return r;
     }
 
-    public void setR(Vertex r) {
-        this.r = r;
-    }
-
     public Vertex getP() {
         return p;
-    }
-
-    public void setP(Vertex p) {
-        this.p = p;
     }
 
     public Vertex getQ() {
         return q;
     }
 
-    public void setQ(Vertex q) {
-        this.q = q;
-    }
-
     public Polygon getDelta() {
         return delta;
-    }
-
-    public void setDelta(Polygon delta) {
-        this.delta = delta;
     }
 
     @Override
