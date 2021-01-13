@@ -60,6 +60,7 @@ public class Controller {
         setInfoBtn();
     }
 
+    // draw a board to show graph
     private void setupBoard() {
         rectangle = new Rectangle(SQUARE_BOARD_X, SQUARE_BOARD_Y, SQUARE_BOARD_SIZE, SQUARE_BOARD_SIZE);
         rectangle.setStroke(Color.DARKGREY);
@@ -70,6 +71,7 @@ public class Controller {
         root.getChildren().add(rectangle);
     }
 
+    // create view of buttons in the menu
     private void setupMenu() {
         randomVerticesGeneratorBtn = new Button("Generate Random Vertices");
         randomVerticesGeneratorBtn.setLayoutY(rectangle.getY() + 25);
@@ -100,6 +102,7 @@ public class Controller {
 
     }
 
+    // make board clickable to draw points by click on it
     private void setBoardClickable() {
         scene.setOnMouseClicked(mouseEvent -> {
             if (isBoardClicked(mouseEvent) && graph.getLineList().size() == 0 &&
