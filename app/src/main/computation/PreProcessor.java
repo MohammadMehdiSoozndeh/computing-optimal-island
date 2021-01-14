@@ -91,7 +91,8 @@ public class PreProcessor {
         System.out.println("intersectionOfLines => " + intersectionOfLines);
 
         System.out.println("Utils.distance(mPE.getR(), mPE.getQ()) => " + Utils.distance(mPE.getR(), mPE.getQ()));
-        System.out.println("Utils.distance(mPE.getR(), intersectionOfLines) => " + Utils.distance(mPE.getR(), intersectionOfLines) + "\n");
+        System.out.println("Utils.distance(mPE.getR(), intersectionOfLines) => "
+                + Utils.distance(mPE.getR(), intersectionOfLines) + "\n");
         return Utils.distance(mPE.getR(), mPE.getQ()) > Utils.distance(mPE.getR(), intersectionOfLines);
     }
 
