@@ -111,7 +111,6 @@ public class WeightComputer {
             else
                 negativeA.add(point);
         }
-
         positiveA.sort((p1, p2) -> (int) ((p2.getAngel() - p1.getAngel()) * 10000));
         negativeA.sort((p1, p2) -> (int) ((p2.getAngel() - p1.getAngel()) * 10000));
 
@@ -120,7 +119,6 @@ public class WeightComputer {
         orderPointsBelowHp.addAll(positiveA);
 
         return orderPointsBelowHp;
-
     }
 
     // ignoring edges which their △ has at least one point with colors other than blue
