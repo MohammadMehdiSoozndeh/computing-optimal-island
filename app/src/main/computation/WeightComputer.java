@@ -43,6 +43,7 @@ public class WeightComputer {
             p.setBelowPointsList(pointsBelowP);
         }
 
+        // Finding an edge with maximum weight possible for result
         int max = 0;
         Edge maxE = null;
         Vertex maxP = null;
@@ -65,6 +66,7 @@ public class WeightComputer {
         System.out.println(maxE);
         System.out.println(max);
 
+        // Finding borders of Optimal Island
         addIslandBorder(maxP, maxE.getQ());
         while (maxE != null) {
             addIslandBorder(maxE.getP(), maxE.getQ());
@@ -83,6 +85,7 @@ public class WeightComputer {
         graph.addBorder("\n" + v1.getGlobalLabel() + " to " + v2.getGlobalLabel());
     }
 
+    // order points below p in circular order base on angel
     private @NotNull List<Point> orderPointsBelowHp(int pIndex, Vertex mP) {
         List<Point> positiveA = new ArrayList<>();
         List<Point> negativeA = new ArrayList<>();
@@ -93,6 +96,8 @@ public class WeightComputer {
             double angel = Utils.calculateAofLine(vertex, mP);
 
             Point point = new Point(vertex.getCircle(), vertex.getGlobalLabel());
+
+            // prevent small data error
             if (angel == 0.0)
                 if (mP.getCircle().getCenterX() < vertex.getCircle().getCenterX())
                     angel = 0.0001;
@@ -100,6 +105,7 @@ public class WeightComputer {
                     angel = -1000;
             point.setAngel(angel);
 
+            // we should order them separately because we need negative angels first
             if (angel > 0)
                 positiveA.add(point);
             else
@@ -117,6 +123,7 @@ public class WeightComputer {
 
     }
 
+    // ignoring edges which their △ has at least one point with colors other than blue
     private @Nullable List<Edge> usableEdgesBelowHp(Vertex p, @NotNull List<Point> orderedPoints) {
         if (orderedPoints.size() < 2) return null;
         List<Edge> usableEdgesBelowHp = new ArrayList<>();
@@ -138,6 +145,7 @@ public class WeightComputer {
     private @NotNull List<Point> processEdgesContainsP(Vertex p, @NotNull List<Point> orderedPoints, List<Edge> fineEdgesBelowHp) {
         List<Point> pointsContainsWeightedEdges = new ArrayList<>();
         for (Point pi : orderedPoints) {
+            // we should order them separately
             List<Edge> LaiFirst = new ArrayList<>();    // page 5 of paper, list of incoming edges to Pi; La,i = {a1,i , ... , aq,i}
             List<Edge> LaiNext = new ArrayList<>();     // page 5 of paper, list of incoming edges to Pi; La,i = {a1,i , ... , aq,i}
             List<Edge> LbiFirst = new ArrayList<>();    // page 5 of paper, list of outgoing edges to Pi; Lb,i = {b1,i , ... , bq,i}
