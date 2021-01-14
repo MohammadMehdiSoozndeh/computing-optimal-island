@@ -54,7 +54,8 @@ public class PreProcessor {
     public boolean isPCompatible(Delta mPE, Delta mPEPrime) {
         System.out.println(mPE);
         System.out.println(mPEPrime);
-        boolean isPCompatible = hasOnlyBluePoint(mPE, graph.getVertexList()) && hasOnlyBluePoint(mPEPrime, graph.getVertexList())
+        boolean isPCompatible =
+                hasOnlyBluePoint(mPE, graph.getVertexList()) && hasOnlyBluePoint(mPEPrime, graph.getVertexList())
                 && haveDisjointInteriors(mPE, mPEPrime)
                 && isConvexPolygon(mPE, mPEPrime);
         System.out.println("isPCompatible -> " + isPCompatible);
