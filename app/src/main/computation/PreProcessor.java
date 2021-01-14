@@ -21,7 +21,8 @@ public class PreProcessor {
     public static boolean hasOnlyBluePoint(Delta delta, @NotNull List<Vertex> vertexList) {
         for (Vertex vertex : vertexList) {
             if (delta.getDelta().contains(vertex.getCircle().getCenterX(), vertex.getCircle().getCenterY()) &&
-                    (vertex.getCircle().getFill().equals(Color.RED) || vertex.getCircle().getFill().equals(Color.MAGENTA) ||
+                    (vertex.getCircle().getFill().equals(Color.RED) ||
+                            vertex.getCircle().getFill().equals(Color.MAGENTA) ||
                             vertex.getCircle().getFill().equals(Color.GREEN)))
                 return false;
         }
