@@ -7,6 +7,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
+import main.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -20,8 +21,8 @@ public class Graph {
 
     // Boundaries of random points generator
     // TODO: 1/13/2021 set these two boundaries as you wish
-    public static final int RANDOM_VERTICES_NUMBER_ORIGIN = 70; // min
-    public static final int RANDOM_VERTICES_NUMBER_BOUND = 75;  // max
+    public static final int RANDOM_VERTICES_NUMBER_ORIGIN = 20; // min
+    public static final int RANDOM_VERTICES_NUMBER_BOUND = 25;  // max
 
     public static final int VERTEX_RADIUS = 5;
 

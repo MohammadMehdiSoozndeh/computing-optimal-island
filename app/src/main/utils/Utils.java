@@ -1,6 +1,7 @@
-package main.graph;
+package main.utils;
 
 import javafx.scene.shape.Circle;
+import main.graph.Vertex;
 
 public class Utils {
 

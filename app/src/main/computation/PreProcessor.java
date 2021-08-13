@@ -4,7 +4,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import main.graph.Delta;
 import main.graph.Graph;
-import main.graph.Utils;
+import main.utils.Utils;
 import main.graph.Vertex;
 import org.jetbrains.annotations.NotNull;
 

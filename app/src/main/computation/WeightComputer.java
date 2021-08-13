@@ -3,6 +3,7 @@ package main.computation;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import main.graph.*;
+import main.utils.Utils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -13,8 +14,8 @@ public class WeightComputer {
 
     private final Graph graph;
     private final List<Vertex> blueList;
-
     private final PreProcessor preProcessor;
+    private List<Vertex> optimalIslandVerticesList;
 
     public WeightComputer(@NotNull Graph graph) {
         this.graph = graph;
@@ -67,6 +68,7 @@ public class WeightComputer {
         System.out.println(max);
 
         // Finding borders of Optimal Island
+        optimalIslandVerticesList = new ArrayList<>();
         addIslandBorder(maxP, maxE.getQ());
         while (maxE != null) {
             addIslandBorder(maxE.getP(), maxE.getQ());
@@ -75,9 +77,14 @@ public class WeightComputer {
             maxE = maxE.getPrev();
         }
         graph.setMaxW(max);
+        System.out.println("\noptimalIslandVerticesList => " + optimalIslandVerticesList);
     }
 
-    private void addIslandBorder(Vertex v1, Vertex v2) {
+    private void addIslandBorder(@NotNull Vertex v1,@NotNull Vertex v2) {
+        if (!optimalIslandVerticesList.contains(v1))
+            optimalIslandVerticesList.add((v1 instanceof Point) ? new Vertex(v1.getCircle(), v1.getGlobalLabel()) : v1);
+        if (!optimalIslandVerticesList.contains(v2))
+            optimalIslandVerticesList.add((v2 instanceof Point) ? new Vertex(v2.getCircle(), v2.getGlobalLabel()) : v2);
         Line line = new Line(v1.getCircle().getCenterX(), v1.getCircle().getCenterY()
                 , v2.getCircle().getCenterX(), v2.getCircle().getCenterY());
         line.setStroke(Color.BLUE);
